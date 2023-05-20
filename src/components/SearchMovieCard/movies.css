@@ -1,0 +1,18 @@
+img {
+    width: 100px;
+
+}
+
+.search-form {
+    display: flex;
+    max-width: 70%;
+    justify-content: center;
+
+}
+
+.search-icon {
+    border-style: none;
+    border-image: none;
+    background-color: rgba(239, 234, 239, 0);
+    border-color: snow;
+}

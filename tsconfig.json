@@ -18,7 +18,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "strictNullChecks": false,
+    "noImplicitAny": false,
+    "types": ["react", "react-dom", "react-responsive-carousel"],
+    "typeRoots": ["./node_modules/@types"]
   },
   "include": [
     "src"
