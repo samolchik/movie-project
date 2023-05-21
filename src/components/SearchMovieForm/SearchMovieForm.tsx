@@ -1,8 +1,12 @@
 import {FC} from 'react';
-import SearchIcon from "@mui/icons-material/Search";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {ISearch} from "../../interfaces";
 import {useSearchParams} from "react-router-dom";
+
+import {joiResolver} from "@hookform/resolvers/joi";
+import SearchIcon from "@mui/icons-material/Search";
+
+import {ISearch} from "../../interfaces";
+import {searchValidator} from "../../validators";
 
 const SearchMovieForm: FC = () => {
     const {
@@ -10,30 +14,26 @@ const SearchMovieForm: FC = () => {
         reset,
         handleSubmit,
         formState: {isValid, errors},
-    } = useForm<ISearch>({mode: 'all'});
+    } = useForm<ISearch>({mode: 'all', resolver:joiResolver(searchValidator)});
 
-    const [, setQuery] = useSearchParams({query: '', page: '1'});
-
+    const [, setQuery] = useSearchParams({query: ''});
 
     const search: SubmitHandler<ISearch> = async (data) => {
-        setQuery({query: data.searchText, page: '1'});
+        setQuery({query: data.searchText});
         reset();
     };
 
-
     return (
-        <form className={'search-form'} onSubmit={handleSubmit(search)}>
+        <form className={'search-form'} onSubmit={handleSubmit(search)} style={{marginBottom: '30px', marginLeft:'17%'}}>
             <input
-                className={"input-field"}
                 type="text"
-                placeholder="Search movie"
+                placeholder="Search movie..."
                 {...register('searchText', {required: true})}
             />
-            {errors.searchText && <span>This field is required</span>}
-
-            <button className='search-icon' type="submit" disabled={!isValid}>
+            <button className={'search-icon'} type={"submit"} disabled={!isValid}>
                 <SearchIcon/>
             </button>
+            {errors.searchText && <div className={'errors'} style={{color: 'red'}}>{errors.searchText.message}</div>}
         </form>
     );
 };

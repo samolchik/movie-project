@@ -1,41 +1,37 @@
 import React, {FC, useEffect} from 'react';
-import {useAppDispatch, useAppSelector} from '../../hooks';
+
 import {movieActions} from '../../redux';
 import {MoviesListCard} from '../MoviesListCard';
-import {useSearchParams} from 'react-router-dom';
-import Skeleton, {SkeletonTheme} from "react-loading-skeleton"
+import {useAppDispatch, useAppSelector} from '../../hooks';
 
 const MoviesListCards: FC = () => {
     const dispatch = useAppDispatch();
-    const {movies, isLoading} = useAppSelector((state) => state.movieReducer);
-    const [query, setQuery] = useSearchParams();
+    const {movies, page, isLoading} = useAppSelector((state) => state.movieReducer);
 
     useEffect(() => {
-        setQuery(prev => ({...prev, page: '1'}))
-    }, [setQuery])
-
-    useEffect(() => {
-        dispatch(movieActions.getAllMovies(+query.get('page')));
-    }, [dispatch, query]);
+        dispatch(movieActions.getAllMovies(page));
+    }, [dispatch, page]);
 
     return (
-        <div className={'container'} style={{marginTop: '40px'}}>
+        <div className={'container'}
+             style={{marginTop: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {
                 isLoading
                     ?
-                    <div className="cards">
-                        <SkeletonTheme highlightColor="#444">
-                            <Skeleton height={300} duration={2}/>
-                        </SkeletonTheme>
-                    </div> :
-                    <div id={'results'} className={'row'}>
-                        <div className={'col s12'}>
-                            {
-                                movies.map((movie) => (
-                                    <MoviesListCard key={movie.id} movie={movie}/>
-                                ))}
-                        </div>
+                    <div className={"progress"} style={{width: '400px', margin: 200}}>
+                        <div className={"indeterminate"}></div>
                     </div>
+                    :
+                    <>
+                        <div id={'results'} className={'row'}>
+                            <div className={'col s12'}>
+                                {
+                                    movies.map((movie) => (
+                                        <MoviesListCard key={movie.id} movie={movie}/>
+                                    ))}
+                            </div>
+                        </div>
+                    </>
             }
         </div>
     );

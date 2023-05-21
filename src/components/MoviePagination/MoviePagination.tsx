@@ -1,40 +1,45 @@
-import { useSearchParams } from 'react-router-dom';
-import { useAppSelector } from '../../hooks';
-import './pagination.css';
-import {ThemeProvider} from "@mui/material";
-import Button from "@mui/material/Button";
+
 import Box from "@mui/material/Box";
 
-const MoviePagination = () => {
-    const { page, numOfPages } = useAppSelector(state => state.movieReducer);
-    const [, setQuery] = useSearchParams();
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import './pagination.css';
+import {FC} from "react";
+import {movieActions} from "../../redux";
+
+interface IProps {
+    page: number
+}
+
+const MoviePagination:FC<IProps> = ({page}) => {
+    const {  totalPages } = useAppSelector(state => state.movieReducer);
+    const dispatch = useAppDispatch();
 
     const maxPageLinks = 5;
 
     const prev = () => {
-        setQuery(prevParams => ({ ...prevParams, page: +prevParams.get('page') - 1 }));
+       dispatch(movieActions.setPage(--page))
     };
 
     const next = () => {
-        setQuery(prevParams => ({ ...prevParams, page: +prevParams.get('page') + 1 }));
+        dispatch(movieActions.setPage(++page));
     };
 
     const handlePageClick = (pageNum) => {
-        setQuery({ page: String(pageNum) });
+        dispatch(movieActions.setPage(pageNum))
     };
 
     const getPageLinks = () => {
         const pageLinks = [];
         let startPage = 1;
-        let endPage = numOfPages;
+        let endPage = totalPages;
 
-        if (numOfPages > maxPageLinks) {
+        if (totalPages > maxPageLinks) {
             const midPage = Math.floor(maxPageLinks / 2);
             if (page > midPage) {
                 startPage = page - midPage;
                 endPage = startPage + maxPageLinks - 1;
-                if (endPage > numOfPages) {
-                    endPage = numOfPages;
+                if (endPage > totalPages) {
+                    endPage = totalPages;
                     startPage = endPage - maxPageLinks + 1;
                 }
             } else {
@@ -58,23 +63,23 @@ const MoviePagination = () => {
     };
 
     return (
-        <Box>
+        <Box sx={{display: 'flex', justifyContent: 'center'}}>
             <ul className={"pagination"}>
                 <button disabled={page === 1} onClick={prev} className={"waves-effect"}>
                     PREV
                 </button>
-                {numOfPages > maxPageLinks && page > Math.ceil(maxPageLinks / 2) && (
-                    <li className={"disabled"}>
-                        <span className={"number"}>...</span>
+                {totalPages > maxPageLinks && page > Math.ceil(maxPageLinks / 2) && (
+                    <li className={"disabled, number"}>
+                        ...
                     </li>
                 )}
                 {getPageLinks()}
-                {numOfPages > maxPageLinks && page < numOfPages - Math.floor(maxPageLinks / 2) && (
-                    <li className={"disabled"}>
-                        <span className={"number"}>...</span>
+                {totalPages > maxPageLinks && page < totalPages - Math.floor(maxPageLinks / 2) && (
+                    <li className={"disabled, number"}>
+                        ...
                     </li>
                 )}
-                <button disabled={page === numOfPages} onClick={next} className={"waves-effect"}>
+                <button disabled={page === totalPages} onClick={next} className={"waves-effect"}>
                     NEXT
                 </button>
             </ul>

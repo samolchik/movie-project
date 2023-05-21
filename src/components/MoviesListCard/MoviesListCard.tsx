@@ -4,8 +4,8 @@ import {NavLink} from "react-router-dom";
 import moment from "moment";
 import {StarsRating} from "../StarsRating";
 
-import {IMovie} from "../../interfaces";
 import {baseImageURL, notImg} from "../../constants";
+import {IMovie} from "../../interfaces";
 import './movies.css';
 
 
@@ -14,10 +14,10 @@ interface IProps {
 }
 
 const MoviesListCard: FC<IProps> = ({movie}) => {
-
     const {title, poster_path, vote_average, release_date, id} = movie;
 
     const date = moment(release_date).format("DD MMM, YYYY");
+
     return (
         <NavLink to={id.toString()} state={{...movie}}>
             <div className={'col s12 m6 l3'}>

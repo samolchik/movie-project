@@ -13,12 +13,9 @@ export interface IMovie {
     overview: string;
     popularity: number;
     poster_path: string | null;
-    // production_companies : IProductionCompany[];
-    // production_countries : IProductionCountry[];
     release_date: Date;
     revenue: number;
     runtime: number;
-    // spoken_languages     : ISpokenLanguage[];
     status: string;
     tagline: string;
     title: string;

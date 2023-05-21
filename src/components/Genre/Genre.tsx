@@ -1,27 +1,41 @@
-import React, { FC } from 'react';
-import { IGenre } from '../../interfaces';
-import css from '../Genres/Genres.module.css';
+import React, {FC} from "react";
+
+import {Box, Button} from "@mui/material";
+
+import {useAppDispatch, useAppSelector} from "../../hooks";
+import { movieActions} from "../../redux";
+import {IGenre} from "../../interfaces";
+import css from '../Genres/Genres.module.css'
 
 interface IProps {
-    genre: IGenre;
-    selected: boolean;
-    onSelect: (genre: IGenre) => void;
+    genre: IGenre,
+    setId: (number)=> void
 }
 
-const Genre: FC<IProps> = ({ genre, selected, onSelect }) => {
-    const { id, name } = genre;
+const Genre: FC<IProps> = React.memo(({genre, setId}) => {
+        const {page} = useAppSelector((state => state.movieReducer))
+        const dispatch = useAppDispatch();
 
-    const handleSelect = () => {
-        onSelect(genre);
-    };
 
-    return (
-        <div className={css.WrapGenre}>
-            <div className={selected ? `${css.Genre} ${css.Selected}` : css.Genre} onClick={handleSelect}>
-                {name}
-            </div>
-        </div>
-    );
-};
+        const findMovies = (genre_ids) => {
+            dispatch(movieActions.searchMovieByGenre({genreIds: genre_ids, page}))
+            dispatch(movieActions.setPage(page))
+            setId(genre_ids)
+        };
 
-export { Genre };
+        return (
+            <Box sx={{ marginLeft: '15px'}}>
+                <Button
+                    onClick={() => findMovies(genre.id)}
+                    variant="contained"
+                    sx={{margin: "12px 5px", display: 'flex', backgroundColor: '#969698'}}
+                    className={css.Genre}
+                    key={genre.id}>
+                    {genre.name}
+                </Button>
+            </Box>
+        )
+    }
+)
+
+export {Genre};

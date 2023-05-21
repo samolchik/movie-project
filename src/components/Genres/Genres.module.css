@@ -1,34 +1,9 @@
 .Genres {
-    margin-left: 100px;
     padding: 10px 50px 140px;
     display: flex;
-    height: 100vh;
+    height: max-content;
     justify-content: center;
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    width: 90%;
-}
-
-.WrapGenre {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 300px;
-}
-
-.Genre {
-    width: 200px;
-    padding: 10px;
-    text-align: center;
-    border: 1px solid silver;
-    border-radius: 5px;
-    color: black;
-    background-color: #c9c8c8;
-    filter: drop-shadow(0px 6px 10px #000);
-    cursor: pointer;
-}
-
-.Genre:hover {
-    width: 220px;
 }

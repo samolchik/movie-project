@@ -1,22 +1,28 @@
-import {createAsyncThunk, createSlice, isFulfilled, isPending, isRejectedWithValue} from "@reduxjs/toolkit";
-import {IError, IMovie, IPagination} from "../../interfaces";
-import { movieService} from "../../services";
 import {AxiosError} from "axios";
+import {createAsyncThunk, createSlice, isFulfilled, isPending, isRejectedWithValue} from "@reduxjs/toolkit";
+
+import {IError, IMovie, IPagination, IVideo, IVideos} from "../../interfaces";
+import { movieService} from "../../services";
 
 interface IState {
     movies: IMovie[],
+    videos:IVideo[] | null,
     page: number,
-    numOfPages: number,
-    errors: IError,
+    totalPages: number,
+    genreIds: number
     isLoading: boolean,
+    errors: IError,
+
 }
 
 const initialState:IState = {
     movies: [],
+    videos:null,
     page: 1,
-    numOfPages: 0,
-    errors: null,
+    totalPages: null,
+    genreIds: 0,
     isLoading: false,
+    errors: null,
 };
 
 const getAllMovies = createAsyncThunk<IPagination<IMovie[]>, number>(
@@ -32,6 +38,20 @@ const getAllMovies = createAsyncThunk<IPagination<IMovie[]>, number>(
     }
 );
 
+const getVideoById = createAsyncThunk<IVideos, number>(
+    'movieSlice/getVideoById',
+    async (id, {rejectWithValue})=> {
+        try {
+            const {data} = await movieService.getVideo(id);
+            return data;
+        }catch (e) {
+            const err = e as AxiosError;
+            return rejectWithValue(err.response.data);
+        }
+    }
+
+)
+
 const getPopularMovies = createAsyncThunk<IPagination<IMovie[]>, number>(
     'movieSlice/getPopularMovies',
     async (page, {rejectWithValue}) => {
@@ -45,12 +65,11 @@ const getPopularMovies = createAsyncThunk<IPagination<IMovie[]>, number>(
     }
 );
 
-
-const selectMovieByGenre = createAsyncThunk<IPagination<IMovie[]>, { genre_ids: number, page: number }>(
+const searchMovieByGenre = createAsyncThunk<IPagination<IMovie[]>, { genreIds: number, page: number }>(
     'searchSlice/selectMovieByGenre',
-    async ({genre_ids, page}, {rejectWithValue}) => {
+    async ({genreIds, page}, {rejectWithValue}) => {
         try {
-            const {data} = await movieService.searchMoviesByGenreId(page, genre_ids)
+            const {data} = await movieService.searchMoviesByGenreId(genreIds, page)
             return data;
         } catch (e) {
             const err = e as AxiosError;
@@ -63,25 +82,36 @@ const slice = createSlice({
     name: 'movieSlice',
     initialState,
     reducers: {
-        updatePageAction(state, action) {
-            state.movies = action.payload;
+        setPage(state, action) {
+            state.page = action.payload;
         },
+        setGenreIds: (state,action)=>{
+            state.genreIds = action.payload
+        }
+
     },
     extraReducers: builder =>
         builder
-            .addMatcher(isFulfilled(getAllMovies, getPopularMovies, selectMovieByGenre), (state, action) => {
+            .addCase(getVideoById.pending, (state)=>{
+                state.isLoading = true
+            })
+            .addCase(getVideoById.fulfilled, (state, action)=>{
+                state.videos = action.payload.results
+                state.isLoading = false
+            })
+            .addMatcher(isFulfilled(getAllMovies, getPopularMovies, searchMovieByGenre), (state, action) => {
                 const {page, results, total_pages} = action.payload;
                 state.movies = results;
                 state.page = page;
-                state.numOfPages = total_pages;
+                state.totalPages = total_pages;
                 state.isLoading = false;
             })
 
-            .addMatcher(isPending(), state => {
-                state.isLoading = true;
+            .addMatcher(isFulfilled(), state => {
                 state.errors = null;
             })
-            .addMatcher(isFulfilled(), state => {
+            .addMatcher(isPending(), state => {
+                state.isLoading = true;
                 state.errors = null;
             })
             .addMatcher(isRejectedWithValue(), (state, action) => {
@@ -95,7 +125,8 @@ const movieActions = {
     ...actions,
     getAllMovies,
     getPopularMovies,
-    selectMovieByGenre
+    searchMovieByGenre,
+    getVideoById
 };
 
 export {

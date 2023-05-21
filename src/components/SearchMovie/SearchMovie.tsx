@@ -1,47 +1,36 @@
-import {FC, useEffect, useState} from 'react';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {ISearch} from '../../interfaces';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import {useSearchParams} from 'react-router-dom';
-import {searchActions} from '../../redux/slices/search.slice';
-import {SearchMovieCard} from '../SearchMovieCard';
-import SearchIcon from '@mui/icons-material/Search';
-import {MoviePagination} from '../MoviePagination';
-import {SearchMovieForm} from "../SearchMovieForm";
+import {FC} from 'react';
+import {NavLink} from "react-router-dom";
 
-const SearchMovie: FC = () => {
-    const {
-        register,
-        reset,
-        handleSubmit,
-        formState: {isValid, errors},
-    } = useForm<ISearch>({mode: 'all'});
+import Badge from '@mui/material/Badge';
 
-    const [searchText, setSearchText] = useState<ISearch>(null);
+import {IMovie} from "../../interfaces";
+import {baseImageURL, notImg} from "../../constants";
+import './movies.css';
 
-    const dispatch = useAppDispatch();
-    const {searchMovies} = useAppSelector((state) => state.searchReducer);
-    const [query, setQuery] = useSearchParams({query: '', page: '1'});
+interface IProps {
+    movie: IMovie
+}
 
-    useEffect(() => {
-        dispatch(
-            searchActions.getSearchMovie({
-                searchText: query.get('query') ?? '',
-                page: +query.get('page'),
-            })
-        );
-    }, [query, dispatch]);
+const SearchMovie: FC<IProps> = ({movie}) => {
+    const {id, title, poster_path, vote_average} = movie;
+
 
     return (
-        <div className={"container"}>
-            <SearchMovieForm/>
-                <div className="row">
-                    {searchMovies.map((movie) => (
-                        <SearchMovieCard key={movie.id} movie={movie}/>
-                    ))}
-                    {searchText && !searchMovies && <h2>No Movies Found</h2>}
+        <NavLink to={id.toString()} state={{...movie}}>
+            <div className={'col s12 m6 l3'}>
+                <div className={'card'}>
+                    <Badge badgeContent={vote_average} color={vote_average > 6 ? "primary" : "secondary"}>
+                        <div className={'card-image waves-effect waves-block waves-light'}>
+                            {
+                                poster_path ?
+                                    <img src={baseImageURL + poster_path} alt={title}/> :
+                                    <img src={notImg} alt={title}/>
+                            }
+                        </div>
+                    </Badge>
                 </div>
-        </div>
+            </div>
+        </NavLink>
     );
 };
 

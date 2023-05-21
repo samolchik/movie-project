@@ -1,13 +1,12 @@
 import * as React from 'react';
+import {FC} from 'react';
+
 import Rating from '@mui/material/Rating';
 import Stack from '@mui/material/Stack';
-import {FC} from 'react';
-import {IRating} from "../../interfaces/rating.interface";
 
 interface IProps {
     rating: number
 }
-
 const StarsRating: FC<IProps> = ({rating}) => {
 
     // export default function HalfRating() {

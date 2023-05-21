@@ -5,7 +5,7 @@ import {API_KEY, baseURL} from "../constants";
 const axiosService = axios.create({baseURL});
 
 axiosService.interceptors.request.use(res=> {
-    res.headers.Authorization = API_KEY;
+    res.headers.Authorization = `Bearer ${API_KEY}`;
 
     return res;
 })

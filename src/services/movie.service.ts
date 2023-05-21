@@ -1,22 +1,22 @@
 import {axiosService} from "./axios.service";
 import {IRes} from "../types";
-import {IMovie, IPagination} from "../interfaces";
+import {IMovie, IPagination, IVideos} from "../interfaces";
 import {urls} from "../constants";
 
 class MovieService {
-    getAll(page: number=1): IRes<IPagination<IMovie[]>> {
+    getAll(page: number): IRes<IPagination<IMovie[]>> {
         return axiosService.get(urls.movies.movies, {
             params: {page}
         })
     }
 
-    searchMoviesByGenreId(genre_ids: number, page: number): IRes<IPagination<IMovie[]>> {
+    searchMoviesByGenreId(genreIds: number, page: number): IRes<IPagination<IMovie[]>> {
         return axiosService.get(urls.movies.movies, {
-            params: {with_genres: genre_ids, page}
+            params: {with_genres: genreIds, page}
         })
     }
 
-    getPopular(page: number ): IRes<IPagination<IMovie[]>> {
+    getPopular(page: number): IRes<IPagination<IMovie[]>> {
         return axiosService.get(urls.movies.popular, {
             params: {page}
         })
@@ -27,6 +27,10 @@ class MovieService {
                 params: {page, query: searchText},
             }
         )
+    }
+
+    getVideo(id: number): IRes<IVideos>{
+        return axiosService.get(urls.movies.video(id))
     }
 }
 

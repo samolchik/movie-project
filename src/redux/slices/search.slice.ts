@@ -1,24 +1,28 @@
-import {createAsyncThunk, createSlice, isFulfilled, isRejectedWithValue} from "@reduxjs/toolkit";
+import {createAsyncThunk, createSlice, isFulfilled, isPending, isRejectedWithValue} from "@reduxjs/toolkit";
 import {AxiosError} from "axios";
 
-import {IError, IMovie, IPagination, ISearch} from "../../interfaces";
+import {IError, IMovie, IPagination} from "../../interfaces";
 import {movieService} from "../../services";
 
 interface IState {
     searchMovies: IMovie[];
+    searchText: string,
     page: number,
     numOfPages: number,
     errors: IError,
+    isLoading: boolean
 }
 
 const initialState: IState = {
     searchMovies: [],
-    page: null,
+    searchText: null,
+    page: 1,
     numOfPages: null,
-    errors: null
+    errors: null,
+    isLoading: false
 };
 
-const getSearchMovie = createAsyncThunk<IPagination<IMovie[]>, ISearch>(
+const getSearchMovie = createAsyncThunk<IPagination<IMovie[]>, { searchText: string, page: number }>(
     'searchSlice/getSearchMovie',
     async ({searchText, page}, {rejectWithValue}) => {
         try {
@@ -34,7 +38,11 @@ const getSearchMovie = createAsyncThunk<IPagination<IMovie[]>, ISearch>(
 const slice = createSlice({
     name: 'searchSlice',
     initialState,
-    reducers: {},
+    reducers: {
+        setSearchText: (state, action)=> {
+            state.searchText = action.payload;
+        }
+    },
     extraReducers: builder =>
         builder
             .addCase(getSearchMovie.fulfilled, (state, action) => {
@@ -42,12 +50,18 @@ const slice = createSlice({
                 state.searchMovies = results;
                 state.page = page;
                 state.numOfPages = total_pages;
+                state.isLoading = false;
 
+            })
+            .addMatcher(isPending(), state => {
+                state.isLoading = true;
+                state.errors = null;
             })
             .addMatcher(isFulfilled(), state => {
                 state.errors = null;
             })
             .addMatcher(isRejectedWithValue(), (state, action) => {
+                state.isLoading = false;
                 state.errors = action.payload;
             })
 });

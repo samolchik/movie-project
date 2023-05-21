@@ -1,12 +1,11 @@
 import {FC} from 'react';
 
-import {SearchMovie} from "../components";
-import './pages.css';
+import {SearchMovies} from "../components";
 
 const SearchMoviePage: FC = () => {
     return (
-        <div className={'page'}>
-            <SearchMovie/>
+        <div>
+            <SearchMovies/>
         </div>
     );
 };

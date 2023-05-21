@@ -14,23 +14,18 @@ import MenuItem from '@mui/material/MenuItem';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormControl from '@mui/material/FormControl';
-import {FormLabel} from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import Switch from "@mui/material/Switch";
 
 import css from './Header.module.css'
+import {Switcher} from "../Switcher";
 
 
 interface IProps {
-    toggleBgColor: ()=> void,
-    bgColorHeader: string,
+    switcher: () => void
 }
 
-const Header: FC<IProps> = ({toggleBgColor, bgColorHeader}) => {
-    const pages = ['popular', 'movies', 'genres']
+const Header: FC<IProps> = ({ switcher}) => {
+    const pages = ['popular', 'genres']
     const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -50,8 +45,10 @@ const Header: FC<IProps> = ({toggleBgColor, bgColorHeader}) => {
         setAnchorElUser(null);
     };
 
+
+
     return (
-        <AppBar position="static" className={css.Header} sx={{backgroundColor: bgColorHeader, filter: 'drop-shadow(-14px 4px 15px #000)'}}>
+        <AppBar position="static" className={css.Header} sx={{ filter: 'drop-shadow(-14px 4px 15px #000)'}}>
             <Container maxWidth="lg">
                 <Toolbar disableGutters>
                     <LocalMoviesIcon sx={{display: {xs: 'none', md: 'flex'}, mr: 1}}/>
@@ -68,6 +65,7 @@ const Header: FC<IProps> = ({toggleBgColor, bgColorHeader}) => {
                             letterSpacing: '.3rem',
                             color: 'inherit',
                             textDecoration: 'none',
+                            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)',
                         }}>
                         MoVoK
                     </Typography>
@@ -107,7 +105,7 @@ const Header: FC<IProps> = ({toggleBgColor, bgColorHeader}) => {
                             ))}
                         </Menu>
                     </Box>
-                    <LocalMoviesIcon sx={{display: {xs: 'flex', md: 'none'}, mr: 1}}/>
+                    <LocalMoviesIcon sx={{display: {xs: 'flex', md: 'none', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)',}, mr: 1}}/>
                     <Typography
                         variant="h5"
                         noWrap
@@ -122,6 +120,7 @@ const Header: FC<IProps> = ({toggleBgColor, bgColorHeader}) => {
                             letterSpacing: '.3rem',
                             color: 'inherit',
                             textDecoration: 'none',
+                            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.6)',
                         }}>
                         MoVoK
                     </Typography>
@@ -130,7 +129,7 @@ const Header: FC<IProps> = ({toggleBgColor, bgColorHeader}) => {
                             <Button
                                 key={page}
                                 onClick={handleCloseNavMenu}
-                                sx={{my: 2, color: 'text.primary', display: 'block'}}
+                                sx={{my: 2, color: 'text.primary', display: 'block', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',}}
                             >
                                 <NavLink to={page}>{page}</NavLink>
                             </Button>
@@ -170,18 +169,12 @@ const Header: FC<IProps> = ({toggleBgColor, bgColorHeader}) => {
                             ))}
                         </Menu>
                     </Box>
-                    <FormControl component="fieldset" variant="standard">
-                        <FormLabel component="legend">
-                            <FormGroup sx={{marginLeft: 7}}>
-                                <FormControlLabel
-                                    control={
-                                        <Switch onChange={toggleBgColor} size="small"/>
-                                    }
-                                    label=""
-                                />
-                            </FormGroup>
-                        </FormLabel>
-                    </FormControl>
+                    <Box sx={{display: {xs: 'none', md: 'flex', marginLeft: '50px'}}}>
+                        <Switcher switcher={switcher} />
+                    </Box>
+                    <Box sx={{display: {xs: 'flex', md: 'none', marginLeft: '10px'}}}>
+                        <Switcher switcher={switcher} />
+                    </Box>
                 </Toolbar>
             </Container>
         </AppBar>

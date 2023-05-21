@@ -1,8 +1,7 @@
 import {axiosService} from "./axios.service";
+import {IGenre, IGenres} from "../interfaces";
 import {IRes} from "../types";
-import {IGenre} from "../interfaces";
 import {urls} from "../constants";
-import {IGenres} from "../interfaces/genres.inerface";
 
 class GenreService {
     getAll(): IRes<IGenres<IGenre[]>> {
