@@ -8,7 +8,7 @@ interface IState {
     searchMovies: IMovie[];
     searchText: string,
     page: number,
-    numOfPages: number,
+    totalPages: number,
     errors: IError,
     isLoading: boolean
 }
@@ -17,7 +17,7 @@ const initialState: IState = {
     searchMovies: [],
     searchText: null,
     page: 1,
-    numOfPages: null,
+    totalPages: null,
     errors: null,
     isLoading: false
 };
@@ -41,7 +41,10 @@ const slice = createSlice({
     reducers: {
         setSearchText: (state, action)=> {
             state.searchText = action.payload;
-        }
+        },
+        setPage(state, action) {
+            state.page = action.payload;
+        },
     },
     extraReducers: builder =>
         builder
@@ -49,7 +52,7 @@ const slice = createSlice({
                 const {page, results, total_pages} = action.payload;
                 state.searchMovies = results;
                 state.page = page;
-                state.numOfPages = total_pages;
+                state.totalPages = total_pages;
                 state.isLoading = false;
 
             })

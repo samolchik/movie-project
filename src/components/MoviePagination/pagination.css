@@ -1,22 +1,11 @@
-.box-pagination {
-    display: flex;
-    align-items: center;
-    padding: 20px;
-}
-
-.pagination li {
-    background-color: #d6d6da;
-    margin: 0 2px;
-}
-
-.number {
-    padding: 2px 7px;
-}
-
 button {
     padding: 3px 10px;
 }
 
 button[disabled] {
     color: silver;
+}
+
+nav {
+    background-color: #74757e;
 }

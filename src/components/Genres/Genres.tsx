@@ -7,6 +7,7 @@ import {genreActions, movieActions} from '../../redux';
 import {Genre} from "../Genre";
 import {MoviesListCards} from "../MoviesListCards";
 import {useAppDispatch, useAppSelector} from '../../hooks';
+
 import css from './Genres.module.css';
 
 const Genres: FC = () => {
@@ -34,7 +35,7 @@ const Genres: FC = () => {
     }));
 
     return (
-        <Box sx={{flexGrow: 1, marginTop: 2,}} className={css.Genres}>
+        <Box sx={{flexGrow: 1, marginTop: 2}} className={css.Genres}>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={10}>
                     <Paper variant="outlined" sx={{backgroundColor: '#74757e'}}>

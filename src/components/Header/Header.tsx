@@ -17,7 +17,7 @@ import Typography from '@mui/material/Typography';
 import SearchIcon from "@mui/icons-material/Search";
 
 import css from './Header.module.css'
-import {Switcher} from "../Switcher";
+import {Switcher} from "../Switcher/Switcher";
 
 
 interface IProps {

@@ -1,90 +1,42 @@
+import React, {FC} from "react";
 
-import Box from "@mui/material/Box";
+import Pagination from '@mui/material/Pagination'
+import Stack from '@mui/material/Stack';
+import {Box} from "@mui/material";
 
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import './pagination.css';
-import {FC} from "react";
-import {movieActions} from "../../redux";
+import './pagination.css'
 
 interface IProps {
     page: number
+    setPage: (page:number) => void
+    totalPages: number
 }
 
-const MoviePagination:FC<IProps> = ({page}) => {
-    const {  totalPages } = useAppSelector(state => state.movieReducer);
-    const dispatch = useAppDispatch();
+const MoviePagination: FC<IProps> = ({ page, setPage, totalPages}) => {
 
-    const maxPageLinks = 5;
-
-    const prev = () => {
-       dispatch(movieActions.setPage(--page))
-    };
-
-    const next = () => {
-        dispatch(movieActions.setPage(++page));
-    };
-
-    const handlePageClick = (pageNum) => {
-        dispatch(movieActions.setPage(pageNum))
-    };
-
-    const getPageLinks = () => {
-        const pageLinks = [];
-        let startPage = 1;
-        let endPage = totalPages;
-
-        if (totalPages > maxPageLinks) {
-            const midPage = Math.floor(maxPageLinks / 2);
-            if (page > midPage) {
-                startPage = page - midPage;
-                endPage = startPage + maxPageLinks - 1;
-                if (endPage > totalPages) {
-                    endPage = totalPages;
-                    startPage = endPage - maxPageLinks + 1;
-                }
-            } else {
-                endPage = maxPageLinks;
-            }
-        }
-
-        for (let i = startPage; i <= endPage; i++) {
-            const active = page === i ? 'active' : '';
-
-            pageLinks.push(
-                <li className={`waves-effect ${active}`} key={i}>
-                    <button  className={'colorActive'} onClick={() => handlePageClick(i)}>
-                        {i}
-                    </button>
-                </li>
-            );
-        }
-
-        return pageLinks;
+    const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
     };
 
     return (
-        <Box sx={{display: 'flex', justifyContent: 'center'}}>
-            <ul className={"pagination"}>
-                <button disabled={page === 1} onClick={prev} className={"waves-effect"}>
-                    PREV
-                </button>
-                {totalPages > maxPageLinks && page > Math.ceil(maxPageLinks / 2) && (
-                    <li className={"disabled, number"}>
-                        ...
-                    </li>
-                )}
-                {getPageLinks()}
-                {totalPages > maxPageLinks && page < totalPages - Math.floor(maxPageLinks / 2) && (
-                    <li className={"disabled, number"}>
-                        ...
-                    </li>
-                )}
-                <button disabled={page === totalPages} onClick={next} className={"waves-effect"}>
-                    NEXT
-                </button>
-            </ul>
-        </Box>
-    );
-};
+        <Stack spacing={2}>
+            <Box>
+                <Pagination
+                    count={totalPages<500? totalPages : 500}
+                    page={page}
+                    onChange={handleChange}
+                    // variant="outlined"
+                    shape="rounded"
 
-export { MoviePagination };
+                    color="primary"
+                    size="large"
+                    showFirstButton
+                    showLastButton
+                    sx={{border:'2px',marginBottom: '10px'}}
+                />
+            </Box>
+        </Stack>
+    );
+}
+
+export {MoviePagination};

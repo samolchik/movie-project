@@ -1,20 +1,27 @@
 import React, {FC, useEffect} from 'react';
 
+import Box from "@mui/material/Box";
+
 import {movieActions} from '../../redux';
 import {MoviesListCard} from '../MoviesListCard';
+import {MoviePagination} from "../MoviePagination";
 import {useAppDispatch, useAppSelector} from '../../hooks';
 
 const MoviesListCards: FC = () => {
     const dispatch = useAppDispatch();
-    const {movies, page, isLoading} = useAppSelector((state) => state.movieReducer);
+    const {movies, page, totalPages, isLoading} = useAppSelector((state) => state.movieReducer);
 
     useEffect(() => {
         dispatch(movieActions.getAllMovies(page));
     }, [dispatch, page]);
 
+    const setPages = (pages: number) => {
+        dispatch(movieActions.setPage(pages))
+    }
+
+
     return (
-        <div className={'container'}
-             style={{marginTop: '40px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        <div style={{marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
             {
                 isLoading
                     ?
@@ -23,7 +30,7 @@ const MoviesListCards: FC = () => {
                     </div>
                     :
                     <>
-                        <div id={'results'} className={'row'}>
+                        <div className={'row'}>
                             <div className={'col s12'}>
                                 {
                                     movies.map((movie) => (
@@ -31,6 +38,9 @@ const MoviesListCards: FC = () => {
                                     ))}
                             </div>
                         </div>
+                        <Box>
+                            <MoviePagination page={page} setPage={setPages} totalPages={totalPages}/>
+                        </Box>
                     </>
             }
         </div>

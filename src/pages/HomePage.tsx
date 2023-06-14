@@ -5,21 +5,25 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import moment from "moment/moment";
 
 import {movieActions} from "../redux";
-import {MoviesListCard} from "../components";
+import {MoviePagination, MoviesListCard} from "../components";
 import {useAppDispatch, useAppSelector} from "../hooks";
+
 import "./pages.css"
 
 const HomePage = () => {
-
+    const {movies, isLoading, page, totalPages} = useAppSelector((state) => state.movieReducer);
     const dispatch = useAppDispatch();
-    const {movies, isLoading, page} = useAppSelector((state) => state.movieReducer);
+
+    const setPages = (pages: number) => {
+        dispatch(movieActions.setPage(pages))
+    }
 
     useEffect(() => {
         dispatch(movieActions.getPopularMovies(page));
     }, [dispatch, page]);
 
     return (
-        <div className={"poster page"}>
+        <div className={"poster page"} >
             {
                 isLoading
                     ?
@@ -59,8 +63,8 @@ const HomePage = () => {
                                 ))
                             }
                         </Carousel>
-                        <div className={'container'} style={{
-                            marginTop: '40px',
+                        <div style={{
+                            padding: '40px 60px',
                             display: 'flex',
                             flexDirection: 'column',
                             alignItems: 'center'
@@ -73,6 +77,7 @@ const HomePage = () => {
                                         ))}
                                 </div>
                             </div>
+                            <MoviePagination page={page} setPage={setPages} totalPages={totalPages}/>
                         </div>
                     </>
 

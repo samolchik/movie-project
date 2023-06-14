@@ -24,11 +24,11 @@ const Genre: FC<IProps> = React.memo(({genre, setId}) => {
         };
 
         return (
-            <Box sx={{ marginLeft: '15px'}}>
+            <Box>
                 <Button
                     onClick={() => findMovies(genre.id)}
                     variant="contained"
-                    sx={{margin: "12px 5px", display: 'flex', backgroundColor: '#969698'}}
+                    sx={{ backgroundColor: '#969698', width: '94%', margin: '5px', boxSizing: 'border-box'}}
                     className={css.Genre}
                     key={genre.id}>
                     {genre.name}

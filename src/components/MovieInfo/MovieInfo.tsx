@@ -14,9 +14,10 @@ import css from './Movie.module.css'
 
 
 const MovieInfo: FC = () => {
-    const {state} = useLocation();
     const {genres} = useAppSelector(state => state.genreReducer);
-    const {videos} = useAppSelector(state => state.movieReducer);
+    const {videos, page} = useAppSelector(state => state.movieReducer);
+
+    const {state} = useLocation();
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
@@ -28,8 +29,10 @@ const MovieInfo: FC = () => {
 
     const findGenres = genres.filter(item => state.genre_ids.includes(item.id));
 
-    const findGenre =  (id:number) => {
-        dispatch(movieActions.setGenreIds(id))
+    const findGenre =  (genre_ids) => {
+        dispatch(movieActions.setGenreIds(genre_ids))
+        dispatch(movieActions.searchMovieByGenre({genreIds: genre_ids, page}))
+
         navigate('/genres')
     }
 
@@ -38,6 +41,7 @@ const MovieInfo: FC = () => {
     useEffect(() => {
             dispatch(movieActions.getVideoById(state.id))
     }, [dispatch, state]);
+
     return (
         <Box>
             <ButtonBack/>

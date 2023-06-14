@@ -6,12 +6,13 @@ import Container from "@mui/material/Container";
 
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {searchActions} from '../../redux';
+import {MoviePagination} from "../MoviePagination";
 import {SearchMovie} from '../SearchMovie';
 import {SearchMovieForm} from "../SearchMovieForm";
 
 const SearchMovies: FC = () => {
     const dispatch = useAppDispatch();
-    const {searchMovies, searchText, isLoading, page} = useAppSelector((state) => state.searchReducer);
+    const {searchMovies, searchText, isLoading, page, totalPages} = useAppSelector((state) => state.searchReducer);
     const [query] = useSearchParams();
 
     useEffect(() => {
@@ -21,11 +22,16 @@ const SearchMovies: FC = () => {
                 page
             })
         );
+        dispatch(searchActions.setPage(page))
     }, [query, dispatch, page]);
+
+    const setPages = (pages: number) => {
+        dispatch(searchActions.setPage(pages))
+    }
 
     return (
         <Container fixed>
-            <Box sx={{height: '100vh', margin: '40px', padding: '10px'}}>
+            <Box sx={{height: '100%', margin: '40px', padding: '10px'}}>
                 <SearchMovieForm/>
                 {
                     isLoading
@@ -35,11 +41,16 @@ const SearchMovies: FC = () => {
                         </div>
                         :
 
-                        <Box className="row">
-                            {searchMovies.map((movie) => (
-                                <SearchMovie key={movie.id} movie={movie}/>
-                            ))}
-                            {searchText && !searchMovies && <h2>No Movies Found</h2>}
+                        <Box sx={{height: 'maxContent', display: 'flex', flexDirection: 'column'}}>
+                            <Box className="row" >
+                                {searchMovies.map((movie) => (
+                                    <SearchMovie key={movie.id} movie={movie}/>
+                                ))}
+                                {searchText && !searchMovies && <h2>`No Movies Found for this ${searchText}` </h2>}
+                            </Box>
+                            <Box>
+                                <MoviePagination page={page} setPage={setPages} totalPages={totalPages}/>
+                            </Box>
                         </Box>
                 }
             </Box>
