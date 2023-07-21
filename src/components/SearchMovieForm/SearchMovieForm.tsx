@@ -1,6 +1,6 @@
 import {FC} from 'react';
 import {SubmitHandler, useForm} from "react-hook-form";
-import {useSearchParams} from "react-router-dom";
+import {useNavigate, useSearchParams} from "react-router-dom";
 
 import {joiResolver} from "@hookform/resolvers/joi";
 import SearchIcon from "@mui/icons-material/Search";
@@ -16,10 +16,15 @@ const SearchMovieForm: FC = () => {
         formState: {isValid, errors},
     } = useForm<ISearch>({mode: 'all', resolver:joiResolver(searchValidator)});
 
+    const navigate = useNavigate();
+
+
     const [, setQuery] = useSearchParams({query: ''});
 
     const search: SubmitHandler<ISearch> = async (data) => {
         setQuery({query: data.searchText});
+        // navigate('search')
+
         reset();
     };
 

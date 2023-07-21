@@ -26,7 +26,7 @@ const getSearchMovie = createAsyncThunk<IPagination<IMovie[]>, { searchText: str
     'searchSlice/getSearchMovie',
     async ({searchText, page}, {rejectWithValue}) => {
         try {
-            const {data} = await movieService.getSearch(page, searchText)
+            const {data} = await movieService.getSearch(searchText, page)
             return data;
         } catch (e) {
             const err = e as AxiosError;

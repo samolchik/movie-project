@@ -1,20 +1,22 @@
 import React, {FC} from "react";
 
-import {Box, Button} from "@mui/material";
+import {Box, Button, useTheme} from "@mui/material";
+
 
 import {useAppDispatch, useAppSelector} from "../../hooks";
-import { movieActions} from "../../redux";
+import {movieActions} from "../../redux";
 import {IGenre} from "../../interfaces";
 import css from '../Genres/Genres.module.css'
 
 interface IProps {
     genre: IGenre,
-    setId: (number)=> void
+    setId: (number) => void
 }
 
 const Genre: FC<IProps> = React.memo(({genre, setId}) => {
         const {page} = useAppSelector((state => state.movieReducer))
         const dispatch = useAppDispatch();
+        const theme = useTheme();
 
 
         const findMovies = (genre_ids) => {
@@ -28,11 +30,18 @@ const Genre: FC<IProps> = React.memo(({genre, setId}) => {
                 <Button
                     onClick={() => findMovies(genre.id)}
                     variant="contained"
-                    sx={{ backgroundColor: '#969698', width: '94%', margin: '5px', boxSizing: 'border-box'}}
+                    sx={{
+                        backgroundColor: theme.palette.primary.main,
+                        width: '94%',
+                        margin: '5px',
+                        boxSizing: 'border-box'
+                    }}
                     className={css.Genre}
                     key={genre.id}>
                     {genre.name}
                 </Button>
+
+
             </Box>
         )
     }

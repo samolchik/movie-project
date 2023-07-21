@@ -18,6 +18,10 @@ const MoviePagination: FC<IProps> = ({ page, setPage, totalPages}) => {
         setPage(value);
     };
 
+    if (totalPages === null) {
+        return null
+    }
+
     return (
         <Stack spacing={2}>
             <Box>
@@ -25,7 +29,7 @@ const MoviePagination: FC<IProps> = ({ page, setPage, totalPages}) => {
                     count={totalPages<500? totalPages : 500}
                     page={page}
                     onChange={handleChange}
-                    // variant="outlined"
+                    variant="outlined"
                     shape="rounded"
 
                     color="primary"

@@ -18,6 +18,9 @@ import SearchIcon from "@mui/icons-material/Search";
 
 import css from './Header.module.css'
 import {Switcher} from "../Switcher/Switcher";
+import {SearchMovies} from "../SearchMovies";
+import {SearchMovieForm} from "../SearchMovieForm";
+import {Search} from "../SearchMovie/Search";
 
 
 interface IProps {
@@ -56,7 +59,7 @@ const Header: FC<IProps> = ({ switcher}) => {
                         variant="h6"
                         noWrap
                         component="a"
-                        href="popular"
+                        href="/"
                         sx={{
                             mr: 2,
                             display: {xs: 'none', md: 'flex'},
@@ -125,18 +128,22 @@ const Header: FC<IProps> = ({ switcher}) => {
                         MoVoK
                     </Typography>
                     <Box className={css.NavLink} sx={{flexGrow: 1, display: {xs: 'none', md: 'flex'}}}>
-                        {pages.map((page) => (
-                            <Button
-                                key={page}
-                                onClick={handleCloseNavMenu}
-                                sx={{my: 2, color: 'text.primary', display: 'block', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',}}
-                            >
-                                <NavLink to={page}>{page}</NavLink>
-                            </Button>
-                        ))}
+                        {/*{pages.map((page) => (*/}
+                        {/*    <Button*/}
+                        {/*        key={page}*/}
+                        {/*        onClick={handleCloseNavMenu}*/}
+                        {/*        sx={{my: 2, color: 'text.primary', display: 'block', textShadow: '2px 2px 4px rgba(0, 0, 0, 0.5)',}}*/}
+                        {/*    >*/}
+                        {/*        <NavLink to={page}>{page}</NavLink>*/}
+                        {/*    </Button>*/}
+                        {/*))}*/}
                         <NavLink to={'search'} style={{display: "flex", alignItems: "center"}}>
                             <SearchIcon/>
+                            {/*<SearchMovieForm/>*/}
                         </NavLink>
+                        <Box>
+                            <Search/>
+                        </Box>
                     </Box>
                     <Box sx={{flexGrow: 0}}>
                         <Tooltip title="Open settings">

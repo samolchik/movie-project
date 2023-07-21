@@ -2,11 +2,11 @@ import {AxiosError} from "axios";
 import {createAsyncThunk, createSlice, isFulfilled, isPending, isRejectedWithValue} from "@reduxjs/toolkit";
 
 import {IError, IMovie, IPagination, IVideo, IVideos} from "../../interfaces";
-import { movieService} from "../../services";
+import {movieService} from "../../services";
 
 interface IState {
     movies: IMovie[],
-    videos:IVideo[] | null,
+    videos: IVideo[] | null,
     page: number,
     totalPages: number,
     genreIds: number
@@ -15,9 +15,9 @@ interface IState {
 
 }
 
-const initialState:IState = {
+const initialState: IState = {
     movies: [],
-    videos:null,
+    videos: null,
     page: 1,
     totalPages: null,
     genreIds: 0,
@@ -40,16 +40,15 @@ const getAllMovies = createAsyncThunk<IPagination<IMovie[]>, number>(
 
 const getVideoById = createAsyncThunk<IVideos, number>(
     'movieSlice/getVideoById',
-    async (id, {rejectWithValue})=> {
+    async (id, {rejectWithValue}) => {
         try {
             const {data} = await movieService.getVideo(id);
             return data;
-        }catch (e) {
+        } catch (e) {
             const err = e as AxiosError;
             return rejectWithValue(err.response.data);
         }
     }
-
 )
 
 const getPopularMovies = createAsyncThunk<IPagination<IMovie[]>, number>(
@@ -66,7 +65,7 @@ const getPopularMovies = createAsyncThunk<IPagination<IMovie[]>, number>(
 );
 
 const searchMovieByGenre = createAsyncThunk<IPagination<IMovie[]>, { genreIds: number, page: number }>(
-    'searchSlice/selectMovieByGenre',
+    'movieSlice/selectMovieByGenre',
     async ({genreIds, page}, {rejectWithValue}) => {
         try {
             const {data} = await movieService.searchMoviesByGenreId(genreIds, page)
@@ -78,6 +77,18 @@ const searchMovieByGenre = createAsyncThunk<IPagination<IMovie[]>, { genreIds: n
     }
 );
 
+const selectMoviesByYear = createAsyncThunk<IPagination<IMovie[]>, { year: string, page: number }>(
+    'movieSlice/selectMoviesByYear',
+    async ({year, page}, {rejectWithValue}) => {
+        try {
+            const {data} = await movieService.getSelectByYear(year, page)
+            return data;
+        } catch (e) {
+            const err = e as AxiosError;
+            return rejectWithValue(err.response.data);
+        }
+    })
+
 const slice = createSlice({
     name: 'movieSlice',
     initialState,
@@ -85,17 +96,17 @@ const slice = createSlice({
         setPage(state, action) {
             state.page = action.payload;
         },
-        setGenreIds: (state,action)=>{
+        setGenreIds: (state, action) => {
             state.genreIds = action.payload
         }
 
     },
     extraReducers: builder =>
         builder
-            .addCase(getVideoById.pending, (state)=>{
+            .addCase(getVideoById.pending, (state) => {
                 state.isLoading = true
             })
-            .addCase(getVideoById.fulfilled, (state, action)=>{
+            .addCase(getVideoById.fulfilled, (state, action) => {
                 state.videos = action.payload.results
                 state.isLoading = false
             })
@@ -126,6 +137,7 @@ const movieActions = {
     getAllMovies,
     getPopularMovies,
     searchMovieByGenre,
+    selectMoviesByYear,
     getVideoById
 };
 

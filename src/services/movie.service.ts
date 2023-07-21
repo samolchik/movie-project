@@ -22,9 +22,16 @@ class MovieService {
         })
     }
 
-    getSearch(page: number, searchText: string): IRes<IPagination<IMovie[]>> {
+    getSearch(searchText: string, page: number,): IRes<IPagination<IMovie[]>> {
         return axiosService.get(urls.search.search, {
                 params: {page, query: searchText},
+            }
+        )
+    }
+
+    getSelectByYear(year: string, page: number,): IRes<IPagination<IMovie[]>> {
+        return axiosService.get(urls.movies.movies, {
+                params: {page, primary_release_year: year},
             }
         )
     }

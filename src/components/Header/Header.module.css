@@ -8,6 +8,6 @@
     padding: 0 10px;
 }
 .NavLink a[class='active']{
-    color: #9b9ba2;
+    /*color: #9b9ba2;*/
     font-weight: bold;
 }

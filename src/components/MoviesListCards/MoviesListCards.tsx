@@ -6,6 +6,7 @@ import {movieActions} from '../../redux';
 import {MoviesListCard} from '../MoviesListCard';
 import {MoviePagination} from "../MoviePagination";
 import {useAppDispatch, useAppSelector} from '../../hooks';
+import {Grid} from "@mui/material";
 
 const MoviesListCards: FC = () => {
     const dispatch = useAppDispatch();
@@ -21,29 +22,49 @@ const MoviesListCards: FC = () => {
 
 
     return (
-        <div style={{marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        // <div style={{marginTop: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
+        //     {
+        //         isLoading
+        //             ?
+        //             <div className={"progress"} style={{width: '400px', margin: 200}}>
+        //                 <div className={"indeterminate"}></div>
+        //             </div>
+        //             :
+        //             <>
+        //                 {/*<div className={'row'}>*/}
+        //                 {/*    <div className={'col s12'}>*/}
+        //                 {/*        {*/}
+        //                 {/*            movies.map((movie) => (*/}
+        //                 {/*                <MoviesListCard key={movie.id} movie={movie}/>*/}
+        //                 {/*            ))}*/}
+        //                 {/*    </div>*/}
+        //                 {/*</div>*/}
+        //                 <Box>
+        //                     <MoviePagination page={page} setPage={setPages} totalPages={totalPages}/>
+        //                 </Box>
+        //             </>
+        //     }
+        // </div>
+
+        <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
             {
-                isLoading
-                    ?
+                isLoading ?
                     <div className={"progress"} style={{width: '400px', margin: 200}}>
                         <div className={"indeterminate"}></div>
                     </div>
                     :
-                    <>
-                        <div className={'row'}>
-                            <div className={'col s12'}>
-                                {
-                                    movies.map((movie) => (
-                                        <MoviesListCard key={movie.id} movie={movie}/>
-                                    ))}
-                            </div>
-                        </div>
-                        <Box>
-                            <MoviePagination page={page} setPage={setPages} totalPages={totalPages}/>
-                        </Box>
-                    </>
+                    <Grid container spacing={4} sx={{display: {xs: 'flex', flexDirection: 'row', md: 'flex'} }}>
+                        {movies.map((movie) => (
+                            <Grid item xs={12} md={3}  key={movie.id}>
+                                <MoviesListCard movie={movie}/>
+                            </Grid>
+                        ))}
+                    </Grid>
             }
-        </div>
+            {/*<Box>*/}
+            {/*    <MoviePagination page={page} setPage={setPages} totalPages={totalPages}/>*/}
+            {/*</Box>*/}
+        </Box>
     );
 };
 

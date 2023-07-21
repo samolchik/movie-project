@@ -9,7 +9,6 @@ interface IProps {
 }
 const StarsRating: FC<IProps> = ({rating}) => {
 
-    // export default function HalfRating() {
     return (
         <Stack spacing={1}>
             <Rating sx={{fontSize:14}} name="half-rating-read" defaultValue={rating} precision={0.5} max={10} readOnly/>

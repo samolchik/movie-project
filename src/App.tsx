@@ -12,9 +12,9 @@ function App() {
         <Box>
             <Routes>
                 <Route path={'/'} element={<MainLayout/>}>
-                    <Route index element={<Navigate to={'popular'}/>}/>
-                    <Route path={'popular'} element={<HomePage/>}/>
-                    <Route path={'popular/:id'} element={<MovieInfoPage/>}/>
+                    <Route index element={<Navigate to={'genres'}/>}/>
+                    {/*<Route path={'popular'} element={<HomePage/>}/>*/}
+                    {/*<Route path={'popular/:id'} element={<MovieInfoPage/>}/>*/}
                     <Route path={'genres'} element={<GenrePage/>}/>
                     <Route path={'genres/:id'} element={<MovieInfoPage/>}/>
                     <Route path={'search'} element={<SearchMoviePage/>}/>

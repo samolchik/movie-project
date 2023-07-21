@@ -5,7 +5,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import moment from "moment/moment";
 
 import {movieActions} from "../redux";
-import {MoviePagination, MoviesListCard} from "../components";
+import {Genres, MoviePagination, MoviesListCard} from "../components";
 import {useAppDispatch, useAppSelector} from "../hooks";
 
 import "./pages.css"
@@ -63,13 +63,8 @@ const HomePage = () => {
                                 ))
                             }
                         </Carousel>
-                        <div style={{
-                            padding: '40px 60px',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center'
-                        }}>
-                            <div id={'results'} className={'row'}>
+                        <div className={'wrapper'}>
+                            <div className={'row'}>
                                 <div className={'col s12'}>
                                     {
                                         movies.map((movie) => (
@@ -77,7 +72,7 @@ const HomePage = () => {
                                         ))}
                                 </div>
                             </div>
-                            <MoviePagination page={page} setPage={setPages} totalPages={totalPages}/>
+                            {/*<MoviePagination page={page} setPage={setPages} totalPages={totalPages}/>*/}
                         </div>
                     </>
 

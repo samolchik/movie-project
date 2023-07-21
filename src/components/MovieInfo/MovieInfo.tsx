@@ -51,19 +51,19 @@ const MovieInfo: FC = () => {
                     <Grid container spacing={1}
                           sx={{display: 'flex', marginTop: '3px', justifyContent: 'space-evenly'}}>
                         <Grid item md={4} xs={12}>
-                            <Paper elevation={6} sx={{height: '500px', width: "350px", borderRadius: '3px'}}>
+                            <Paper elevation={6} sx={{borderRadius: '3px'}}>
                                 {
                                     state.poster_path ?
-                                        <img className={css.Img} width={'400px'} height={'500px'}
+                                        <img className={css.Img}
                                             src={baseImageURL + state.poster_path} alt={state.title}/> :
-                                        <img className={css.Img} width={'400px'} height={'500px'}
+                                        <img className={css.Img}
                                             src={notImg} alt={state.title}/>
                                 }
                             </Paper>
                         </Grid>
                         <Grid item md={7} xs={12}>
                             <Typography mb={2} variant={'h3'}>{state?.title}</Typography>
-                            <Typography mb={2} variant={'h5'}> {state.overview}</Typography>
+                            <Typography mb={2} variant={'h5'} className={css.Overview} > {state.overview}</Typography>
                             <Typography variant={'h6'}>Rating: {state.vote_average}</Typography>
                             <StarsRating rating={state.vote_average}/>
                             <Typography mb={2} sx={{display: 'flex', alignItems: 'center', gap: '10px'}} variant={'body1'}>

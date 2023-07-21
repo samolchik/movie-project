@@ -11,6 +11,12 @@
 }
 
 
+
+ .css-ch2k2f-MuiTypography-root {
+     font-size: 20px;
+ }
+
+
 .Content {
     margin: 20px;
     padding: 30px;
@@ -29,9 +35,8 @@
 .Img {
     filter: drop-shadow(-14px 4px 15px #000);
     border-radius: 5px;
-    width: 100%;
-    /*max-width: 350px;*/
-    /*min-width: 100px;*/
+    width: 420px;
+    height: 600px;
 }
 
 .Icon {
@@ -48,8 +53,17 @@
     color: #484849;
 }
 
-.Overview {
-    margin-top: 30px;
-    text-align: justify;
-    color: #181875;
+@media (max-width: 680px) {
+    .Img {
+        width: 212px;
+        height: 300px;
+    }
+
+    .Overview {
+        font-size: 1rem;
+    }
+
+    .css-ch2k2f-MuiTypography-root {
+        font-size: 20px;
+    }
 }

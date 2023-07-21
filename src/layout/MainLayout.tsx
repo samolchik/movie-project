@@ -14,7 +14,7 @@ const lightTheme = createTheme({
             main: '#939494',
         },
         background: {
-            default: '#FFFFFF',
+            default: '#cdcecf',
         },
         text: {
             primary: '#b9b7b7',
@@ -29,14 +29,14 @@ const darkTheme = createTheme({
             main: '#161b25',
         },
         secondary: {
-            main: '#233352',
+            main: '#e9eaec',
         },
         background: {
-            default: '#4766a2',
+            default: '#2A2D34',
         },
         text: {
             primary: '#0b0c0c',
-            secondary: '#233352',
+            secondary: '#1e2121',
         },
     },
 });

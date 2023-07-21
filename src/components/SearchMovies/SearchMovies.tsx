@@ -2,7 +2,6 @@ import React, {FC, useEffect} from 'react';
 import {useSearchParams} from 'react-router-dom';
 
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {searchActions} from '../../redux';
@@ -30,7 +29,6 @@ const SearchMovies: FC = () => {
     }
 
     return (
-        <Container fixed>
             <Box sx={{height: '100%', margin: '40px', padding: '10px'}}>
                 <SearchMovieForm/>
                 {
@@ -46,15 +44,16 @@ const SearchMovies: FC = () => {
                                 {searchMovies.map((movie) => (
                                     <SearchMovie key={movie.id} movie={movie}/>
                                 ))}
-                                {searchText && !searchMovies && <h2>`No Movies Found for this ${searchText}` </h2>}
+                                {!searchMovies && <h2>`Not found movie for this keyword ${searchText}` </h2>}
                             </Box>
+                            { !searchText &&
                             <Box>
                                 <MoviePagination page={page} setPage={setPages} totalPages={totalPages}/>
                             </Box>
+                            }
                         </Box>
                 }
             </Box>
-        </Container>
     );
 };
 
