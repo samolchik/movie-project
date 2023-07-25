@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {Box, FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {Box, Button, FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, useTheme} from "@mui/material";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import {movieActions} from "../../redux";
 
@@ -9,42 +9,42 @@ interface YearOption {
 }
 
 const YearsSelect = () => {
-    const [value, setValue] = useState('');
+    const {page, selectYear} = useAppSelector((state) => state.movieReducer);
     const dispatch = useAppDispatch();
-    const {page} = useAppSelector((state) => state.movieReducer);
+    const theme = useTheme();
 
-    const years: YearOption[] = [];
-    for (let year = 2023; year >= 1930; year--) {
-        years.push({label: String(year), year});
-    }
+    const years: YearOption[] = Array.from({length: 2023 - 1930 + 1}, (_, index) => {
+        const year = 2023 - index;
+        return {label: `${year}`, year};
+    });
 
     useEffect(() => {
         dispatch(movieActions.selectMoviesByYear({
-            year: value, page
+            year: +selectYear, page
         }));
-    }, [dispatch, page, value]);
+    }, [dispatch, page, selectYear]);
 
-    const handleSelectChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-        setValue(event.target.value as string);
+    const handleSelectChange = (event: SelectChangeEvent) => {
+        dispatch(movieActions.setSelectYear(event.target.value as string));
     };
 
 
     return (
-        <Box sx={{maxWidth: 120}}>
-            <FormControl fullWidth sx={{marginBottom: '2px'}}>
-                <InputLabel id="demo-simple-select-label">Year</InputLabel>
+        <Box  sx={{ width: '80px'}}>
+            <FormControl fullWidth variant="standard">
+                <InputLabel id="demo-simple-standard-label" sx={{color: theme.palette.text.secondary}}>Year</InputLabel>
                 <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    value={value}
-                    label="Age"
-                    // @ts-ignore
+                    labelId="demo-simple-standard-label"
+                    id="demo-simple-standard"
+                    value={selectYear}
+                    label="Year"
                     onChange={handleSelectChange}
+                    sx={{color: theme.palette.text.secondary}}
                 >
                     {years.map((item, idx) => (
-                        <MenuItem key={idx} value={item.year}>
+                        <Button key={idx} value={item.year}>
                             {item.label}
-                        </MenuItem>
+                        </Button>
                     ))}
                 </Select>
             </FormControl>

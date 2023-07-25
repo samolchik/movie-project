@@ -16,7 +16,7 @@ const SearchMovies: FC = () => {
 
     useEffect(() => {
         dispatch(
-            searchActions.getSearchMovie({
+            searchActions.searchMovie({
                 searchText: query.get('query') ?? '',
                 page
             })

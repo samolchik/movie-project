@@ -7,13 +7,13 @@ import {genreService} from "../../services";
 
 interface IState {
     genres: IGenre[];
-    idGenres: number[],
+    idGenres: string,
     errors: IError,
 }
 
 const initialState: IState = {
     genres: [],
-    idGenres: null,
+    idGenres: '',
     errors: null
 };
 
@@ -35,11 +35,12 @@ const slice = createSlice({
     initialState,
     reducers: {
         setIdGenres:(state, action)=> {
-            state.idGenres.push(action.payload)
+            // state.idGenres.push(action.payload)
+            state.idGenres = action.payload
         },
-        removeIdGenres:(state, action)=> {
-            state.idGenres= state.idGenres.filter((id)=> id !== action.payload)
-        }
+        // removeIdGenres:(state, action)=> {
+        //     state.idGenres= state.idGenres.filter((id)=> id !== action.payload)
+        // }
     },
     extraReducers: builder =>
         builder

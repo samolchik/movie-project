@@ -22,8 +22,8 @@ const initialState: IState = {
     isLoading: false
 };
 
-const getSearchMovie = createAsyncThunk<IPagination<IMovie[]>, { searchText: string, page: number }>(
-    'searchSlice/getSearchMovie',
+const searchMovie = createAsyncThunk<IPagination<IMovie[]>, { searchText: string, page: number }>(
+    'searchSlice/searchMovie',
     async ({searchText, page}, {rejectWithValue}) => {
         try {
             const {data} = await movieService.getSearch(searchText, page)
@@ -48,7 +48,7 @@ const slice = createSlice({
     },
     extraReducers: builder =>
         builder
-            .addCase(getSearchMovie.fulfilled, (state, action) => {
+            .addCase(searchMovie.fulfilled, (state, action) => {
                 const {page, results, total_pages} = action.payload;
                 state.searchMovies = results;
                 state.page = page;
@@ -72,7 +72,7 @@ const slice = createSlice({
 const {actions, reducer: searchReducer} = slice;
 const searchActions = {
     ...actions,
-    getSearchMovie
+    searchMovie
 };
 
 export {

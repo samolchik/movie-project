@@ -7,8 +7,7 @@ import {StarsRating} from "../StarsRating";
 import {baseImageURL, notImg} from "../../constants";
 import {IMovie} from "../../interfaces";
 import './movies.css';
-import {Box, Card, CardContent, CardMedia, Grid, Paper, Typography, useTheme} from '@mui/material';
-import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import {Box, Card, CardContent, CardMedia, Typography, useTheme} from '@mui/material';
 
 
 interface IProps {
@@ -24,29 +23,10 @@ const MoviesListCard: FC<IProps> = ({movie}) => {
 
     return (
         <NavLink to={id.toString()} state={{...movie}}>
-            {/*<div className={'col s12 m6 l3'}>*/}
-            {/*    <div className={'card'}>*/}
-            {/*        <div className="card-image waves-effect waves-block waves-light">*/}
-            {/*            {*/}
-            {/*                poster_path ?*/}
-            {/*                    <img src={baseImageURL + poster_path} alt={title}/> :*/}
-            {/*                    <img src={notImg} alt={title}/>*/}
-            {/*            }*/}
-            {/*        </div>*/}
-            {/*        <div className="card-content info">*/}
-            {/*            <div className="grey-text text-darken-2 fontSize-8" style={{height:'40px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>{title}</div>*/}
-            {/*            <div style={{padding: '5px 0'}}>*/}
-            {/*                <StarsRating rating={vote_average}/>*/}
-            {/*            </div>*/}
-            {/*            <div>{date}</div>*/}
-            {/*        </div>*/}
-            {/*    </div>*/}
-            {/*</div>*/}
-
             <Card sx={{maxHeight: 600, position: 'relative', cursor: 'pointer'}}>
                 <CardMedia
                     component="img"
-                    height="400"
+                    height="420"
                     image={imgUrl}
                     alt={title}
                 />
@@ -58,18 +38,23 @@ const MoviesListCard: FC<IProps> = ({movie}) => {
                         alignItems: 'center',
                         justifyContent: 'center',
                         padding: 1,
-                        paddingBottom: 0
                     }}
                 >
-                    <Box sx={{height: {xs: 50, md: 60}, textAlign: 'center'}}>
-                        < Typography variant="body1" color="text.secondary">
+                    <Box sx={{
+                        height: {xs: 50, md: 64},
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        < Typography variant="body1" color="text.primary" sx={{textAlign:'center'}}>
                             {title}
                         </Typography>
-                    <Typography color="text.secondary">
-                        {date}
-                    </Typography>
+                        <Typography color="text.primary" sx={{mb:'7px'}}>
+                            {date}
+                        </Typography>
 
-                        <StarsRating rating={vote_average}/>
+                        <StarsRating rating={vote_average} />
                     </Box>
                 </CardContent>
             </Card>

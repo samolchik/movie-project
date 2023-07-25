@@ -9,7 +9,9 @@ interface IState {
     videos: IVideo[] | null,
     page: number,
     totalPages: number,
-    genreIds: number
+    genreIds: number,
+    selectGenre: string,
+    selectYear: string,
     isLoading: boolean,
     errors: IError,
 
@@ -20,7 +22,9 @@ const initialState: IState = {
     videos: null,
     page: 1,
     totalPages: null,
-    genreIds: 0,
+    genreIds:0,
+    selectGenre: '',
+    selectYear: '',
     isLoading: false,
     errors: null,
 };
@@ -77,11 +81,11 @@ const searchMovieByGenre = createAsyncThunk<IPagination<IMovie[]>, { genreIds: n
     }
 );
 
-const selectMoviesByYear = createAsyncThunk<IPagination<IMovie[]>, { year: string, page: number }>(
+const selectMoviesByYear = createAsyncThunk<IPagination<IMovie[]>, {  page: number, year: number }>(
     'movieSlice/selectMoviesByYear',
-    async ({year, page}, {rejectWithValue}) => {
+    async ({ page, year}, {rejectWithValue}) => {
         try {
-            const {data} = await movieService.getSelectByYear(year, page)
+            const {data} = await movieService.getSelectByYear(page, year)
             return data;
         } catch (e) {
             const err = e as AxiosError;
@@ -98,7 +102,14 @@ const slice = createSlice({
         },
         setGenreIds: (state, action) => {
             state.genreIds = action.payload
+        },
+        setSelectGenre: (state, action) => {
+            state.selectGenre = action.payload
+        },
+        setSelectYear: (state, action) => {
+            state.selectYear = action.payload
         }
+
 
     },
     extraReducers: builder =>
@@ -110,7 +121,7 @@ const slice = createSlice({
                 state.videos = action.payload.results
                 state.isLoading = false
             })
-            .addMatcher(isFulfilled(getAllMovies, getPopularMovies, searchMovieByGenre), (state, action) => {
+            .addMatcher(isFulfilled(getAllMovies, getPopularMovies, searchMovieByGenre, selectMoviesByYear), (state, action) => {
                 const {page, results, total_pages} = action.payload;
                 state.movies = results;
                 state.page = page;

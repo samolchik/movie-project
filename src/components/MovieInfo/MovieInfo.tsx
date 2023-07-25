@@ -23,13 +23,13 @@ const MovieInfo: FC = () => {
 
     const date = moment(state.release_date).format("DD MMM, YYYY");
 
-    useEffect(() => {
-        dispatch(genreActions.getAllGenre())
-    }, [dispatch])
+    // useEffect(() => {
+    //     dispatch(genreActions.getAllGenre())
+    // }, [dispatch])
 
     const findGenres = genres.filter(item => state.genre_ids.includes(item.id));
 
-    const findGenre =  (genre_ids) => {
+    const findGenre = (genre_ids) => {
         dispatch(movieActions.setGenreIds(genre_ids))
         dispatch(movieActions.searchMovieByGenre({genreIds: genre_ids, page}))
 
@@ -39,7 +39,7 @@ const MovieInfo: FC = () => {
     const sliceVideos = videos?.slice(0, 1);
 
     useEffect(() => {
-            dispatch(movieActions.getVideoById(state.id))
+        dispatch(movieActions.getVideoById(state.id))
     }, [dispatch, state]);
 
     return (
@@ -47,44 +47,51 @@ const MovieInfo: FC = () => {
             <ButtonBack/>
             {
                 state &&
-                <Box sx={{backgroundColor: '#d0d1d3', padding: '40px', margin: '0 20px', borderRadius: '10px', filter: 'drop-shadow(-14px 4px 15px #000)'}}>
+                <Box sx={{
+                    backgroundColor: '#d0d1d3',
+                    padding: '20px',
+                    margin: '0 10px',
+                    borderRadius: '10px',
+                    filter: 'drop-shadow(-14px 4px 15px #000)'
+                }}>
                     <Grid container spacing={1}
                           sx={{display: 'flex', marginTop: '3px', justifyContent: 'space-evenly'}}>
                         <Grid item md={4} xs={12}>
-                            <Paper elevation={6} sx={{borderRadius: '3px'}}>
+                            <Box sx={{borderRadius: '3px', display: 'flex', justifyContent: 'center'}}>
                                 {
                                     state.poster_path ?
                                         <img className={css.Img}
-                                            src={baseImageURL + state.poster_path} alt={state.title}/> :
+                                             src={baseImageURL + state.poster_path} alt={state.title}/> :
                                         <img className={css.Img}
-                                            src={notImg} alt={state.title}/>
+                                             src={notImg} alt={state.title}/>
                                 }
-                            </Paper>
+                            </Box>
                         </Grid>
                         <Grid item md={7} xs={12}>
                             <Typography mb={2} variant={'h3'}>{state?.title}</Typography>
-                            <Typography mb={2} variant={'h5'} className={css.Overview} > {state.overview}</Typography>
+                            <Typography mb={2} variant={'h5'} className={css.Overview}> {state.overview}</Typography>
                             <Typography variant={'h6'}>Rating: {state.vote_average}</Typography>
                             <StarsRating rating={state.vote_average}/>
-                            <Typography mb={2} sx={{display: 'flex', alignItems: 'center', gap: '10px'}} variant={'body1'}>
+                            <Typography mb={2} sx={{display: 'flex', alignItems: 'center', gap: '10px'}}
+                                        variant={'body1'}>
                                 <ThumbUpIcon/> {state.vote_count}</Typography>
                             <Typography variant={'body1'}>Date: {date}</Typography>
                             <Typography variant={'body1'}>Language: {state.original_language}</Typography>
                             <Typography variant={'body1'}>Popularity: {state.popularity}</Typography>
-                            <Grid item md={7} xs={12} sx={{ margin: "12px 0", display: 'flex'}}>
+                            <Grid item md={7} xs={12} sx={{margin: "12px 0", display: 'flex'}}>
                                 {
-                                findGenres && findGenres.map(genre =>
-                                    <Button
-                                        onClick={()=>findGenre(genre.id)}
-                                        variant="contained"
-                                        sx={{ margin: "12px 5px", display: 'flex'}}
-                                        key={genre.id}>{genre.name}
-                                    </Button>)
+                                    findGenres && findGenres.map(genre =>
+                                        <Button
+                                            onClick={() => findGenre(genre.id)}
+                                            variant="contained"
+                                            sx={{margin: "12px 5px", display: 'flex'}}
+                                            key={genre.id}>{genre.name}
+                                        </Button>)
                                 }
                             </Grid>
                             {
-                                sliceVideos && sliceVideos.map(video=>(
-                                    <Grid key={video.id} md={12} xs={12} item >
+                                sliceVideos && sliceVideos.map(video => (
+                                    <Grid key={video.id} md={12} xs={12} item>
                                         <iframe
                                             width="100%"
                                             height="315"

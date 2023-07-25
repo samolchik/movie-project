@@ -11,13 +11,13 @@ const lightTheme = createTheme({
             main: '#5a5b5d',
         },
         secondary: {
-            main: '#939494',
+            main: '#f7f8f8',
         },
         background: {
             default: '#cdcecf',
         },
         text: {
-            primary: '#b9b7b7',
+            primary: '#676666',
             secondary: '#333232',
         },
     },
@@ -36,7 +36,7 @@ const darkTheme = createTheme({
         },
         text: {
             primary: '#0b0c0c',
-            secondary: '#1e2121',
+            secondary: '#e5e8e8',
         },
     },
 });

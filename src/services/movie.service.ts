@@ -29,14 +29,14 @@ class MovieService {
         )
     }
 
-    getSelectByYear(year: string, page: number,): IRes<IPagination<IMovie[]>> {
+    getSelectByYear(page: number, year: number): IRes<IPagination<IMovie[]>> {
         return axiosService.get(urls.movies.movies, {
                 params: {page, primary_release_year: year},
             }
         )
     }
 
-    getVideo(id: number): IRes<IVideos>{
+    getVideo(id: number): IRes<IVideos> {
         return axiosService.get(urls.movies.video(id))
     }
 }

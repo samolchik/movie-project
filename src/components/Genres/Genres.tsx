@@ -1,68 +1,58 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, { FC, useEffect } from 'react';
 
 import Box from "@mui/material/Box";
-import {Grid, Paper, styled, useTheme} from "@mui/material";
+import {
+    Button,
+    FormControl,
+    InputLabel, Paper,
+    Select,
+    useTheme
+} from "@mui/material";
 
-import {genreActions, movieActions} from '../../redux';
-import {Genre} from "../Genre";
-import {MoviesListCards} from "../MoviesListCards";
-import {useAppDispatch, useAppSelector} from '../../hooks';
-
-import css from './Genres.module.css';
-import Stack from "@mui/material/Stack";
+import { genreActions, movieActions } from '../../redux';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const Genres: FC = () => {
-    const {genres} = useAppSelector((state) => state.genreReducer);
-    const {page} = useAppSelector((state) => state.movieReducer);
+    const { genres } = useAppSelector((state) => state.genreReducer);
+    const { page, selectGenre } = useAppSelector((state) => state.movieReducer);
     const dispatch = useAppDispatch();
-    const [id, setId] = useState(null);
-
+    const theme = useTheme();
 
     useEffect(() => {
-        const listGenres = dispatch(genreActions.getAllGenre());
+        dispatch(genreActions.getAllGenre());
+    }, [dispatch]);
 
-        if (listGenres) {
-            dispatch(movieActions.searchMovieByGenre({genreIds: id, page}))
-        }
-    }, [dispatch, page, id]);
-
-    // useEffect(() => {
-    // }, [dispatch, page, id])
-
-
-    // const PositionSticky = styled(Paper)(({theme}) => ({
-    //     padding: theme.spacing(1),
-    //     color: theme.palette.text.secondary,
-    //     background: theme.palette.primary.main,
-    //     position: 'sticky',
-    //     boxSizing: 'border-box',
-    //     top: theme.spacing(2)
-    // }));
+    const findMovies = (selectedGenre) => {
+        dispatch(movieActions.searchMovieByGenre({ genreIds: selectedGenre, page }));
+        dispatch(movieActions.setSelectGenre(selectedGenre));
+    };
 
     return (
-        <Box sx={{flexGrow: 1, margin: 2}} className={css.Genres}>
-            <Grid container spacing={2}>
-                <Grid item xs={12} display={"flex"} sx={{flexWrap: 'wrap', justifyContent: 'center'}}>
-                    {
-                        genres && genres.map(genre => <Genre key={genre.id} genre={genre} setId={setId}/>)
-                    }
-                </Grid>
-                <Grid item xs={12} md={12} sx={{padding: '20px'}}>
-                    <MoviesListCards/>
-                </Grid>
-                {/*<Grid item xs={12} md={2}>*/}
-                {/*    <PositionSticky variant="outlined">*/}
-                {/*        <Paper variant="outlined" sx={{backgroundColor: '#e3e2e0'}}>*/}
-                {/*            {*/}
-                {/*                genres && genres.map(genre => <Genre key={genre.id} genre={genre} setId={setId}/>)*/}
-                {/*            }*/}
-                {/*        </Paper>*/}
-                {/*    </PositionSticky>*/}
-                {/*</Grid>*/}
-            </Grid>
+        <Box>
+            <FormControl variant="standard" >
+                <InputLabel id="demo-simple-select-standard-label" sx={{color: theme.palette.text.secondary}}>Genres</InputLabel>
+                <Select
+                    labelId="demo-simple-select-standard-label"
+                    id="demo-simple-select-standard"
+                    value={selectGenre}
+                    label="Age"
+                    sx={{ width: '100px', color: theme.palette.text.secondary}}
+                >
+                    {genres && genres.map(genre =>
+                        <Button
+                            key={genre.id}
+                            onClick={() => findMovies(genre.id)}
+                            sx={{ width: '150px', textTransform: 'none', margin: '5px'}}
+                            variant={+selectGenre === genre.id ? "contained" : "outlined"}
+                            color="primary"
+                        >
+                            {genre.name}
+                        </Button>
+                    )}
+                </Select>
+            </FormControl>
         </Box>
     );
 };
 
-
-export {Genres};
+export { Genres };
