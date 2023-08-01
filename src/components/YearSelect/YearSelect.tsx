@@ -9,7 +9,7 @@ interface YearOption {
 }
 
 const YearsSelect = () => {
-    const {page, selectYear} = useAppSelector((state) => state.movieReducer);
+    const { selectYear} = useAppSelector((state) => state.movieReducer);
     const dispatch = useAppDispatch();
     const theme = useTheme();
 
@@ -18,18 +18,9 @@ const YearsSelect = () => {
         return {label: `${year}`, year};
     });
 
-    useEffect(() => {
-        dispatch(movieActions.selectMoviesByYear({
-            year: +selectYear, page
-        }));
-    }, [dispatch, page, selectYear]);
-
-    const handleSelectChange = (event: SelectChangeEvent) => {
+    const selectMoviesByYear = (event: SelectChangeEvent) => {
         dispatch(movieActions.setSelectYear(event.target.value as string));
-        dispatch(movieActions.selectMoviesByYear({
-            year: +selectYear, page
-        }));
-        dispatch(movieActions.setPage(page))
+        dispatch(movieActions.setFilterMovies('years'))
     };
 
 
@@ -42,7 +33,7 @@ const YearsSelect = () => {
                     id="demo-simple-standard"
                     value={selectYear}
                     label="Year"
-                    onChange={handleSelectChange}
+                    onChange={selectMoviesByYear}
                     sx={{color: theme.palette.text.secondary}}
                 >
                     {years.map((item, idx) => (

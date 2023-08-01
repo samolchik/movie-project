@@ -9,11 +9,31 @@ import {Grid} from "@mui/material";
 
 const MoviesListCards: FC = () => {
     const dispatch = useAppDispatch();
-    const {movies, page, isLoading} = useAppSelector((state) => state.movieReducer);
+    const {
+        movies,
+        page,
+        filterMovies,
+        selectGenre,
+        selectYear,
+        searchText
+    } = useAppSelector((state) => state.movieReducer);
 
     useEffect(() => {
-        dispatch(movieActions.getAllMovies(page));
-    }, [dispatch, page]);
+        switch (filterMovies) {
+            case 'genres':
+                dispatch(movieActions.searchMovieByGenre({ genreIds: selectGenre, page }));
+                break;
+            case 'years':
+                dispatch(movieActions.selectMoviesByYear({ year: +selectYear, page }));
+                break;
+            case 'search':
+                dispatch(movieActions.searchMovies({ searchText, page }));
+                break;
+            default:
+                dispatch(movieActions.getAllMovies(page));
+                break;
+        }
+    }, [dispatch, page, filterMovies, selectGenre, selectYear, searchText]);
 
 
     return (

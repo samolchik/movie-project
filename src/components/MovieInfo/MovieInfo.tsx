@@ -22,18 +22,14 @@ const MovieInfo: FC = () => {
     const navigate = useNavigate();
 
     const date = moment(state.release_date).format("DD MMM, YYYY");
-
-    // useEffect(() => {
-    //     dispatch(genreActions.getAllGenre())
-    // }, [dispatch])
-
     const findGenres = genres.filter(item => state.genre_ids.includes(item.id));
 
-    const findGenre = (genre_ids) => {
-        dispatch(movieActions.setGenreIds(genre_ids))
-        dispatch(movieActions.searchMovieByGenre({genreIds: genre_ids, page}))
+    const findMoviesByGenre = (genre_ids) => {
+        dispatch(movieActions.setSelectGenre(genre_ids))
+        // dispatch(movieActions.searchMovieByGenre({genreIds: genre_ids, page}))
+        dispatch(movieActions.setFilterMovies('genres'))
 
-        navigate('/genres')
+        navigate('/home')
     }
 
     const sliceVideos = videos?.slice(0, 1);
@@ -83,7 +79,7 @@ const MovieInfo: FC = () => {
                                 {
                                     findGenres && findGenres.map(genre =>
                                         <Button
-                                            onClick={() => findGenre(genre.id)}
+                                            onClick={() => findMoviesByGenre(genre.id)}
                                             variant="contained"
                                             sx={{m: "12px 5px", display: 'flex'}}
                                             key={genre.id}>{genre.name}

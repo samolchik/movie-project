@@ -9,9 +9,10 @@ interface IState {
     videos: IVideo[] | null,
     page: number,
     totalPages: number,
-    genreIds: number,
-    selectGenre: string,
+    searchText: string,
+    selectGenre: number,
     selectYear: string,
+    filterMovies: string,
     isLoading: boolean,
     errors: IError,
 
@@ -22,9 +23,10 @@ const initialState: IState = {
     videos: null,
     page: 1,
     totalPages: null,
-    genreIds: 0,
-    selectGenre: '',
+    searchText: '',
+    selectGenre: 0,
     selectYear: '',
+    filterMovies: '',
     isLoading: false,
     errors: null,
 };
@@ -68,6 +70,19 @@ const getPopularMovies = createAsyncThunk<IPagination<IMovie[]>, number>(
     }
 );
 
+const searchMovies = createAsyncThunk<IPagination<IMovie[]>, { searchText: string, page: number }>(
+    'movieSlice/searchMovie',
+    async ({searchText, page}, {rejectWithValue}) => {
+        try {
+            const {data} = await movieService.getSearch(searchText, page)
+            return data;
+        } catch (e) {
+            const err = e as AxiosError;
+            return rejectWithValue(err.response.data);
+        }
+    }
+);
+
 const searchMovieByGenre = createAsyncThunk<IPagination<IMovie[]>, { genreIds: number, page: number }>(
     'movieSlice/selectMovieByGenre',
     async ({genreIds, page}, {rejectWithValue}) => {
@@ -100,14 +115,17 @@ const slice = createSlice({
         setPage(state, action) {
             state.page = action.payload;
         },
-        setGenreIds: (state, action) => {
-            state.genreIds = action.payload
+        setSearchText: (state, action)=> {
+            state.searchText = action.payload;
         },
         setSelectGenre: (state, action) => {
             state.selectGenre = action.payload
         },
         setSelectYear: (state, action) => {
             state.selectYear = action.payload
+        },
+        setFilterMovies: (state, action) => {
+            state.filterMovies = action.payload
         }
 
 
@@ -121,7 +139,7 @@ const slice = createSlice({
                 state.videos = action.payload.results
                 state.isLoading = false
             })
-            .addMatcher(isFulfilled(getAllMovies, getPopularMovies, searchMovieByGenre, selectMoviesByYear), (state, action) => {
+            .addMatcher(isFulfilled(getAllMovies, getPopularMovies,searchMovies, searchMovieByGenre, selectMoviesByYear), (state, action) => {
                 const {page, results, total_pages} = action.payload;
                 state.movies = results;
                 state.page = page;
@@ -147,6 +165,7 @@ const movieActions = {
     ...actions,
     getAllMovies,
     getPopularMovies,
+    searchMovies,
     searchMovieByGenre,
     selectMoviesByYear,
     getVideoById
