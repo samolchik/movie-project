@@ -2,16 +2,15 @@ import React, {FC, useEffect} from 'react';
 import {useSearchParams} from 'react-router-dom';
 
 import Box from "@mui/material/Box";
+import Grid from '@mui/material/Grid';
 
-import {useAppDispatch, useAppSelector} from '../../hooks';
+import {MoviesListCard} from "../MoviesListCard";
 import {searchActions} from '../../redux';
-import {MoviePagination} from "../MoviePagination";
-import {SearchMovie} from '../SearchMovie';
-import {SearchMovieForm} from "../SearchMovieForm";
+import {useAppDispatch, useAppSelector} from '../../hooks';
 
 const SearchMovies: FC = () => {
     const dispatch = useAppDispatch();
-    const {searchMovies, searchText, isLoading, page, totalPages} = useAppSelector((state) => state.searchReducer);
+    const {searchMovies, searchText, page} = useAppSelector((state) => state.searchReducer);
     const [query] = useSearchParams();
 
     useEffect(() => {
@@ -24,36 +23,18 @@ const SearchMovies: FC = () => {
         dispatch(searchActions.setPage(page))
     }, [query, dispatch, page]);
 
-    const setPages = (pages: number) => {
-        dispatch(searchActions.setPage(pages))
-    }
 
     return (
-            <Box sx={{height: '100%', margin: '40px', padding: '10px'}}>
-                <SearchMovieForm/>
-                {
-                    isLoading
-                        ?
-                        <div className={"progress"} style={{width: '400px', margin: 200}}>
-                            <div className={"indeterminate"}></div>
-                        </div>
-                        :
-
-                        <Box sx={{height: 'maxContent', display: 'flex', flexDirection: 'column'}}>
-                            <Box className="row" >
-                                {searchMovies.map((movie) => (
-                                    <SearchMovie key={movie.id} movie={movie}/>
-                                ))}
-                                {!searchMovies && <h2>`Not found movie for this keyword ${searchText}` </h2>}
-                            </Box>
-                            { !searchText &&
-                            <Box>
-                                <MoviePagination page={page} setPage={setPages} totalPages={totalPages}/>
-                            </Box>
-                            }
-                        </Box>
-                }
-            </Box>
+        <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
+            <Grid container spacing={4} sx={{display: {xs: 'flex', flexDirection: 'row', md: 'flex'}}}>
+                    {searchMovies.map((movie) => (
+                        <Grid item xs={12} md={3} key={movie.id}>
+                        <MoviesListCard key={movie.id} movie={movie}/>
+                    {!searchMovies && <h2>`Not found movie for this keyword ${searchText}` </h2>}
+                        </Grid>
+                    ))}
+            </Grid>
+        </Box>
     );
 };
 

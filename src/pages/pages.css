@@ -73,6 +73,10 @@
         align-items: center;
     }
 
+    .posterImage-overlay {
+        padding: 2.8rem;
+    }
+
     .posterImage-title {
         font-size: 1.5rem;
     }
@@ -85,4 +89,9 @@
     .posterImage-rating {
         margin-left: 0.6rem;
     }
+
+    .posterImage-desc {
+        display: none;
+    }
 }
+

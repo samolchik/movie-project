@@ -18,21 +18,13 @@ const MoviesListCards: FC = () => {
 
     return (
         <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'center'}}>
-            {
-                isLoading ?
-                    <div className={"progress"} style={{width: '400px', margin: 200}}>
-                        <div className={"indeterminate"}></div>
-                    </div>
-                    :
-                    <Grid container spacing={4} sx={{display: {xs: 'flex', flexDirection: 'row', md: 'flex'}}}>
-                        {movies.map((movie) => (
-                            <Grid item xs={12} md={3} key={movie.id}>
-                                <MoviesListCard movie={movie}/>
-                            </Grid>
-                        ))}
+            <Grid container spacing={4} sx={{display: {xs: 'flex', flexDirection: 'row', md: 'flex'}}}>
+                {movies.map((movie) => (
+                    <Grid item xs={12} md={3} key={movie.id}>
+                        <MoviesListCard movie={movie}/>
                     </Grid>
-            }
-
+                ))}
+            </Grid>
         </Box>
     );
 };

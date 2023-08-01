@@ -44,18 +44,18 @@ const MovieInfo: FC = () => {
 
     return (
         <Box>
-            <ButtonBack/>
+            {/*<ButtonBack/>*/}
             {
                 state &&
                 <Box sx={{
                     backgroundColor: '#d0d1d3',
-                    padding: '20px',
-                    margin: '0 10px',
+                    p: '20px',
+                    m: '20px 10px',
                     borderRadius: '10px',
-                    filter: 'drop-shadow(-14px 4px 15px #000)'
+                    filter: 'drop-shadow(-14px 4px 15px #000)',
                 }}>
                     <Grid container spacing={1}
-                          sx={{display: 'flex', marginTop: '3px', justifyContent: 'space-evenly'}}>
+                          sx={{display: 'flex', mt: '3px', justifyContent: 'space-evenly'}}>
                         <Grid item md={4} xs={12}>
                             <Box sx={{borderRadius: '3px', display: 'flex', justifyContent: 'center'}}>
                                 {
@@ -68,23 +68,24 @@ const MovieInfo: FC = () => {
                             </Box>
                         </Grid>
                         <Grid item md={7} xs={12}>
-                            <Typography mb={2} variant={'h3'}>{state?.title}</Typography>
-                            <Typography mb={2} variant={'h5'} className={css.Overview}> {state.overview}</Typography>
-                            <Typography variant={'h6'}>Rating: {state.vote_average}</Typography>
+                            <Typography mb={2} variant={'h3'} sx={{display:{xs: 'none', md: 'flex'}}}>{state?.title}</Typography>
+                            <Typography mb={2} variant={'h5'} sx={{display:{xs: 'flex', md: 'none'}, mt: '4px', mb: '8px'}}>{state?.title}</Typography>
+                            <Typography mb={2} variant={'h6'} sx={{display:{xs: 'none', md: 'flex'}}}> {state.overview}</Typography>
+                            <Typography mb={2} variant={'body1'} sx={{display:{xs: 'flex', md: 'none'}}}> {state.overview}</Typography>
+                            <Typography variant={'body2'}>Date: {date}</Typography>
+                            <Typography variant={'body2'}>Language: {state.original_language}</Typography>
+                            <Typography variant={'body2'}>Popularity: {state.popularity}</Typography>
+                            <Typography variant={'body2'}>Rating: {state.vote_average}</Typography>
+                            <Typography variant={'body2'} sx={{display: 'flex', alignItems: 'center', gap: '10px'}}>
+                                <ThumbUpIcon sx={{mb: '5px'}}/> {state.vote_count}</Typography>
                             <StarsRating rating={state.vote_average}/>
-                            <Typography mb={2} sx={{display: 'flex', alignItems: 'center', gap: '10px'}}
-                                        variant={'body1'}>
-                                <ThumbUpIcon/> {state.vote_count}</Typography>
-                            <Typography variant={'body1'}>Date: {date}</Typography>
-                            <Typography variant={'body1'}>Language: {state.original_language}</Typography>
-                            <Typography variant={'body1'}>Popularity: {state.popularity}</Typography>
                             <Grid item md={7} xs={12} sx={{margin: "12px 0", display: 'flex'}}>
                                 {
                                     findGenres && findGenres.map(genre =>
                                         <Button
                                             onClick={() => findGenre(genre.id)}
                                             variant="contained"
-                                            sx={{margin: "12px 5px", display: 'flex'}}
+                                            sx={{m: "12px 5px", display: 'flex'}}
                                             key={genre.id}>{genre.name}
                                         </Button>)
                                 }

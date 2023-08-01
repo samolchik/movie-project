@@ -15,10 +15,11 @@ interface IProps {
 }
 
 const MoviesListCard: FC<IProps> = ({movie}) => {
-    const {title, poster_path, vote_average, release_date, id, vote_count} = movie;
+    const {title, poster_path, vote_average, release_date, id} = movie;
 
-    const date = moment(release_date).format("DD MMM, YYYY");
-    const imgUrl = poster_path ? `https://image.tmdb.org/t/p/w500/${poster_path}` : `${notImg}`;
+    const date = moment(release_date).format("DD MMM YYYY");
+    const baseImageURL = 'https://image.tmdb.org/t/p/w500/';
+    const imgUrl = poster_path ? `${baseImageURL}${poster_path}` : `${notImg}`;
     const theme = useTheme();
 
     return (

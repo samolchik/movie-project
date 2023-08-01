@@ -22,7 +22,7 @@ const initialState: IState = {
     videos: null,
     page: 1,
     totalPages: null,
-    genreIds:0,
+    genreIds: 0,
     selectGenre: '',
     selectYear: '',
     isLoading: false,
@@ -81,11 +81,11 @@ const searchMovieByGenre = createAsyncThunk<IPagination<IMovie[]>, { genreIds: n
     }
 );
 
-const selectMoviesByYear = createAsyncThunk<IPagination<IMovie[]>, {  page: number, year: number }>(
+const selectMoviesByYear = createAsyncThunk<IPagination<IMovie[]>, { year: number, page: number }>(
     'movieSlice/selectMoviesByYear',
-    async ({ page, year}, {rejectWithValue}) => {
+    async ({year, page}, {rejectWithValue}) => {
         try {
-            const {data} = await movieService.getSelectByYear(page, year)
+            const {data} = await movieService.getSelectByYear(year, page)
             return data;
         } catch (e) {
             const err = e as AxiosError;

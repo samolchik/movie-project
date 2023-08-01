@@ -22,9 +22,9 @@ const Genres: FC = () => {
         dispatch(genreActions.getAllGenre());
     }, [dispatch]);
 
-    const findMovies = (selectedGenre) => {
-        dispatch(movieActions.searchMovieByGenre({ genreIds: selectedGenre, page }));
-        dispatch(movieActions.setSelectGenre(selectedGenre));
+    const findMovies = (selectGenre) => {
+        dispatch(movieActions.searchMovieByGenre({ genreIds: selectGenre, page }));
+        dispatch(movieActions.setSelectGenre(selectGenre));
     };
 
     return (
@@ -41,6 +41,7 @@ const Genres: FC = () => {
                     {genres && genres.map(genre =>
                         <Button
                             key={genre.id}
+                            value={genre.id}
                             onClick={() => findMovies(genre.id)}
                             sx={{ width: '150px', textTransform: 'none', margin: '5px'}}
                             variant={+selectGenre === genre.id ? "contained" : "outlined"}

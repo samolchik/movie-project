@@ -24,14 +24,14 @@ class MovieService {
 
     getSearch(searchText: string, page: number,): IRes<IPagination<IMovie[]>> {
         return axiosService.get(urls.search.search, {
-                params: {page, query: searchText},
+                params: {query: searchText, page},
             }
         )
     }
 
-    getSelectByYear(page: number, year: number): IRes<IPagination<IMovie[]>> {
+    getSelectByYear( year: number, page: number): IRes<IPagination<IMovie[]>> {
         return axiosService.get(urls.movies.movies, {
-                params: {page, primary_release_year: year},
+                params: {primary_release_year: year, page },
             }
         )
     }

@@ -26,11 +26,15 @@ const YearsSelect = () => {
 
     const handleSelectChange = (event: SelectChangeEvent) => {
         dispatch(movieActions.setSelectYear(event.target.value as string));
+        dispatch(movieActions.selectMoviesByYear({
+            year: +selectYear, page
+        }));
+        dispatch(movieActions.setPage(page))
     };
 
 
     return (
-        <Box  sx={{ width: '80px'}}>
+        <Box sx={{width: '80px'}}>
             <FormControl fullWidth variant="standard">
                 <InputLabel id="demo-simple-standard-label" sx={{color: theme.palette.text.secondary}}>Year</InputLabel>
                 <Select
