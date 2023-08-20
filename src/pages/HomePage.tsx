@@ -57,14 +57,14 @@ const HomePage: FC = () => {
                     ))
                 }
             </Carousel>
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                flexWrap: 'wrap',
-                margin: '10px 18px 0 18px',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-            }}>
+            <Box className={'options'}
+                 sx={{
+                     display: 'flex',
+                     flexDirection: 'row',
+                     flexWrap: 'wrap',
+                     justifyContent: 'space-around',
+                     alignItems: 'center',
+                 }}>
                 <Typography variant={'h5'} sx={{
                     color: theme.palette.text.secondary,
                     textShadow: '2px 2px 6px rgba(0, 0, 0, 0.7)'
@@ -75,7 +75,7 @@ const HomePage: FC = () => {
                 <Genres />
                 <Search />
             </Box>
-            <Grid item xs={12} md={12} sx={{ padding: '20px' }}>
+            <Grid item xs={12} md={12} className={'movies-list'}>
                 <MoviesListCards />
             </Grid>
             <MoviePagination page={page} setPage={setPages} totalPages={totalPages} />

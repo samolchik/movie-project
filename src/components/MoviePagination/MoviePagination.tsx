@@ -25,7 +25,7 @@ const MoviePagination: FC<IProps> = ({page, setPage, totalPages}) => {
 
     return (
         <Stack spacing={2}>
-            <Box sx={{display: 'flex', justifyContent: 'center'}}>
+            <Box sx={{ display: 'flex', justifyContent: 'center'}}>
                 <Pagination
                     count={totalPages < 500 ? totalPages : 500}
                     page={page}
@@ -37,11 +37,30 @@ const MoviePagination: FC<IProps> = ({page, setPage, totalPages}) => {
                     showFirstButton
                     showLastButton
                     sx={{
+                        display: {xs: 'none', md: 'flex'},
                         border: '2px',
                         marginBottom: '10px',
                         padding: '6px',
                         backgroundColor: theme.palette.background.default,
-                        // text: theme.palette.text.secondary
+                    }}
+                />
+                <Pagination
+                    count={totalPages < 500 ? totalPages : 500}
+                    siblingCount={0}
+                    page={page}
+                    onChange={handleChange}
+                    variant="outlined"
+                    shape="rounded"
+                    color="secondary"
+                    size="small"
+                    showFirstButton
+                    showLastButton
+                    sx={{
+                        display: {xs: 'flex', md: 'none'},
+                        border: '2px',
+                        marginBottom: '10px',
+                        padding: '6px',
+                        backgroundColor: theme.palette.background.default,
                     }}
                 />
             </Box>

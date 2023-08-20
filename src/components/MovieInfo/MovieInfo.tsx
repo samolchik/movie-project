@@ -1,13 +1,12 @@
 import React, {FC, useEffect} from 'react';
 import {useLocation, useNavigate} from "react-router-dom";
 
-import {Box, Button, Grid, Paper, Typography} from "@mui/material";
+import {Box, Button, Grid, Typography} from "@mui/material";
 import moment from "moment/moment";
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 
 import {baseImageURL, baseVideoURL, notImg} from "../../constants";
-import {ButtonBack} from "../ButtonBack";
-import {genreActions, movieActions} from "../../redux";
+import { movieActions} from "../../redux";
 import {StarsRating} from "../StarsRating";
 import {useAppDispatch, useAppSelector} from "../../hooks";
 import css from './Movie.module.css'
@@ -15,7 +14,7 @@ import css from './Movie.module.css'
 
 const MovieInfo: FC = () => {
     const {genres} = useAppSelector(state => state.genreReducer);
-    const {videos, page} = useAppSelector(state => state.movieReducer);
+    const {videos} = useAppSelector(state => state.movieReducer);
 
     const {state} = useLocation();
     const dispatch = useAppDispatch();
@@ -24,7 +23,7 @@ const MovieInfo: FC = () => {
     const date = moment(state.release_date).format("DD MMM, YYYY");
     const findGenres = genres.filter(item => state.genre_ids.includes(item.id));
 
-    const findMoviesByGenre = (genre_ids) => {
+    const findMoviesByGenre = (genre_ids:number) => {
         dispatch(movieActions.setSelectGenre(genre_ids))
         // dispatch(movieActions.searchMovieByGenre({genreIds: genre_ids, page}))
         dispatch(movieActions.setFilterMovies('genres'))
@@ -75,14 +74,17 @@ const MovieInfo: FC = () => {
                             <Typography variant={'body2'} sx={{display: 'flex', alignItems: 'center', gap: '10px'}}>
                                 <ThumbUpIcon sx={{mb: '5px'}}/> {state.vote_count}</Typography>
                             <StarsRating rating={state.vote_average}/>
-                            <Grid item md={7} xs={12} sx={{margin: "12px 0", display: 'flex'}}>
+                            <Grid item md={7} xs={12} sx={{margin: "12px 0", display: 'flex', flexDirection:'wrap', flexWrap:'wrap'}}>
                                 {
                                     findGenres && findGenres.map(genre =>
                                         <Button
                                             onClick={() => findMoviesByGenre(genre.id)}
                                             variant="contained"
-                                            sx={{m: "12px 5px", display: 'flex'}}
-                                            key={genre.id}>{genre.name}
+                                            className={css.Genres}
+                                            sx={{m: "5px", display: 'flex'}}
+                                            key={genre.id}
+                                        >
+                                            {genre.name}
                                         </Button>)
                                 }
                             </Grid>

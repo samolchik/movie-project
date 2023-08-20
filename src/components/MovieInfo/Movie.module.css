@@ -11,10 +11,9 @@
 }
 
 
-
- .css-ch2k2f-MuiTypography-root {
-     font-size: 20px;
- }
+.css-ch2k2f-MuiTypography-root {
+    font-size: 20px;
+}
 
 
 .Content {
@@ -53,6 +52,11 @@
     color: #484849;
 }
 
+.Genres {
+    /*margin: 12px 5px;*/
+    display: flex;
+}
+
 @media (max-width: 680px) {
     .Img {
         width: 250px;
@@ -65,5 +69,11 @@
 
     .css-ch2k2f-MuiTypography-root {
         font-size: 20px;
+    }
+
+    .Genres {
+        display: flex;
+        margin-bottom: 6px;
+        font-size: 10px;
     }
 }

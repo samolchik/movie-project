@@ -4,6 +4,7 @@ import {Outlet} from 'react-router-dom';
 import {Box, Container, createTheme, ThemeProvider} from '@mui/material';
 
 import {Header} from '../components';
+import './layout.css';
 
 const lightTheme = createTheme({
     palette: {
@@ -57,9 +58,8 @@ const MainLayout: FC = () => {
     return (
         <ThemeProvider theme={theme}>
             <Box>
-                <Container maxWidth="xl" sx={{
+                <Container maxWidth="xl" className={'padding'} sx={{
                     backgroundColor: darkMode ? '#2A2D34' : '#cdcecf',
-                    padding: '30px',
                     height: 'maxContent'
                 }}>
                     <Header switcher={handleThemeChange}/>
